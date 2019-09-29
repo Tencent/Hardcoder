@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/init_hardCoder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="initHardCoder"
+            />
+
+        <Button
+            android:id="@+id/check_permission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="checkPermission"
+            />
+
+
+        <Button
+            android:id="@+id/debug_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="debug_log"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="open/close Hardcoder to test startPerformance/requestCpuHighFreq/requestCpuCoreForThread/requestUnify"
+            />
+
+        <Button
+            android:id="@+id/hc_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="当前HC状态：已关闭"
+            />
+
+        <Button
+            android:id="@+id/request_cpu_high_freq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="requestCpuHighFreq"
+            />
+
+        <Button
+            android:id="@+id/cancel_cpu_high_freq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="cancelCpuHighFreq"
+            />
+
+        <Button
+            android:id="@+id/request_gpu_high_freq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="requestGpuHighFreq"
+            />
+
+        <Button
+            android:id="@+id/cancel_gpu_high_freq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="cancelGpuHighFreq"
+            />
+
+        <Button
+            android:id="@+id/request_cpu_core_for_thread"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="requestCpuCoreForThread"
+            />
+
+        <Button
+            android:id="@+id/cancel_cpu_core_for_thread"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="cancelCpuCoreForThread"
+            />
+
+        <Button
+            android:id="@+id/requestUnify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="requestUnify"
+            />
+
+        <Button
+            android:id="@+id/cancelUnify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="cancelUnify"
+            />
+
+        <Button
+            android:id="@+id/request_high_IO_freq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="requestHighIOFreq"
+            />
+
+        <Button
+            android:id="@+id/cancel_high_IO_freq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="cancelHighIOFreq"
+            />
+
+
+        <Button
+            android:id="@+id/start_performance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:text="startPerformance"
+            />
+
+        <Button
+            android:id="@+id/stop_performace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="stopPerformace"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="test multi process"
+            />
+
+        <Button
+            android:id="@+id/multiProcess"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="multiProcess"
+            />
+    </LinearLayout>
+</ScrollView>

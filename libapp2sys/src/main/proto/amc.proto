@@ -1,0 +1,91 @@
+syntax = "proto2";
+
+package amc;
+option optimize_for = LITE_RUNTIME;
+
+message CertTag {
+    required string manufacture = 1;
+    required bytes cert = 2;
+}
+
+message CheckPermission {
+    repeated CertTag certTags = 1;
+}
+
+message RequestCPUHighFreq{
+    required int32 scene = 1;
+    required int32 level = 2;
+    required int32 timeoutMs = 3;
+    required int64 action = 4;
+}
+
+message RequestGPUHighFreq{
+    required int32 scene = 1;
+    required int32 level = 2;
+    required int32 timeoutMs = 3;
+    required int64 action = 4;
+}
+
+message RequestCPUCoreForThread{
+    required int32 scene = 1;
+    repeated int32 bindtids = 2;
+    required int32 timeoutMs = 3;
+    required int64 action = 4;
+}
+
+message CancelCPUCoreForThread{
+    repeated int32 bindtids = 1;
+}
+
+message RequestHighIOFreq{
+    required int32 scene = 1;
+    required int32 level = 2;
+    required int32 timeoutMs = 3;
+    required int64 action = 4;
+}
+
+message RequestScreenResolution{
+    required int32 level = 1;
+    required string uiName = 2;
+}
+
+message RequestBootPreLoadResource{
+    repeated string filelist = 1;
+}
+
+message Configuration {
+    required bytes data = 1;
+}
+
+message GetParameters {
+    required bytes data = 1;
+}
+
+message RegisterCallback{
+    required int32 type = 1;
+    required int32 uid = 2;
+    required int32 pid = 3;
+}
+
+message DataCallback{
+    required int32 type = 1;
+    required bytes data = 2;
+}
+
+message RequestUnifyCPUIOThreadCore{
+    required int32 scene = 1;
+    required int32 cpulevel = 2;
+    required int32 iolevel = 3;
+    repeated int32 bindtids = 4;
+    required int32 timeoutMs = 5;
+    required int64 action = 6;
+    optional int32 gpulevel = 7;
+}
+
+message CancelUnifyCPUIOThreadCore{
+    required int32 cancelcpu = 1;
+    required int32 cancelio = 2;
+    required int32 cancelthread = 3;
+    repeated int32 bindtids = 4;
+    optional int32 cancelgpu = 5;
+}
