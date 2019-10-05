@@ -4,7 +4,7 @@
 
 
 
-中文版请见[这里](./docs/README_chinese.md)。
+中文版请见[这里](https://github.com/Tencent/Hardcoder/wiki/Home)。
 
 
 
@@ -14,19 +14,19 @@
 
 Hardcoder framework could averagely optimize the performance of Wechat by 10%-30% in terms of Wechat startup, video delivery, mini program startup, and other highly-loaded scenes. Furthermore, it could also averagely optimize the performance of Mobile QQ by 10%-50% in terms of mobile QQ startup, chatting Initialization, picture delivery, and other highly-loaded scenes. The framework now has been applied to mobile brands such as OPPO, vivo, Huawei, XIAOMI, Sumsang, Meizu, etc and covers more than 460 millions devices.  
 
-![readme](./docs/images/readme.jpg)
+![readme](https://raw.githubusercontent.com/wiki/Tencent/Hardcoder/images/readme.jpg)
 
 
 
 ## Getting started
 
-1.  Read “[Product introduction of Hardcoder](./docs/hardcoder_introduction.md)” to learn about Hardcoder.
+1.  Read “[Product introduction of Hardcoder](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-产品方案介绍)” to learn about Hardcoder.
 
-2. Read “[Technical introduction of Hardcoder](./docs/hardcoder_technology_introduction.md)” to know the implementation philosophy and technical framework.
+2. Read “[Technical introduction of Hardcoder](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-技术方案介绍)” to know the implementation philosophy and technical framework.
 
-3. Use the testapp to quickly verify the performance of Hardcoder. For the further detail, please check ”[Hardcoder testapp testing instruction](./docs/hardcoder_testapp_test_guide.md)“.
+3. Use the testapp to quickly verify the performance of Hardcoder. For the further detail, please check ”[Hardcoder testapp testing instruction](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-Testapp测试指南)“.
 
-4. Please check the “[Hardcoder Application Instruction](./docs/hardcoder_users_guide.md)” to learn how to use Hardcoder.
+4. Please check the “[Hardcoder Application Instruction](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-接入指南)” to learn how to use Hardcoder.
 
    1. Download Hardcoder repo and compline Hardcoder aar.
    2. Apply Hardcoder aar to “build.gradle”.
@@ -36,7 +36,7 @@ Hardcoder framework could averagely optimize the performance of Wechat by 10%-30
    6. Actively call stopPerformance when scene stops and it needs to transfer the “hashCode" corresponding to the startPerformance in order to identify the corresponding scene. Then it can stop this request.
    7. Test the performance. To do the comparison between the situation in which “Hardcoder is on and  off”.
 
-5. Apply the authentication from mobile brands. For the further detail, please check [FAQ](./docs/FAQ.md).
+5. Apply the authentication from mobile brands. For the further detail, please check [FAQ](https://github.com/Tencent/Hardcoder/wiki/FAQ).
 
 6. Launch APP which has involved Hardcoder.
 
@@ -44,18 +44,18 @@ Hardcoder framework could averagely optimize the performance of Wechat by 10%-30
 
 ## Document Support
 
-1. Product introduction of Hardcoder——https://github.com/Tencent/Hardcoder/blob/master/docs/hardcoder_introduction.md
-2. Technical introduction of Hardcoder——https://github.com/Tencent/Hardcoder/blob/master/docs/hardcoder_technology_introduction.md
-3. Hardcoder testapp testing instruction——https://github.com/Tencent/Hardcoder/blob/master/docs/hardcoder_testapp_test_guide.md
-4. Hardcoder Application Instruction——https://github.com/Tencent/Hardcoder/blob/master/docs/hardcoder_users_guide.md
-5. FAQ——https://github.com/Tencent/Hardcoder/blob/master/docs/FAQ.md
+1. Product introduction of Hardcoder——[https://github.com/Tencent/Hardcoder/wiki/Hardcoder-产品方案介绍](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-产品方案介绍)
+2. Technical introduction of Hardcoder——[https://github.com/Tencent/Hardcoder/wiki/Hardcoder-技术方案介绍](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-技术方案介绍)
+3. Hardcoder testapp testing instruction——[https://github.com/Tencent/Hardcoder/wiki/Hardcoder-Testapp测试指南](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-Testapp测试指南)
+4. Hardcoder Application Instruction——[https://github.com/Tencent/Hardcoder/wiki/Hardcoder-接入指南](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-接入指南)
+5. FAQ——https://github.com/Tencent/Hardcoder/wiki/FAQ
 
 
 
 
 ## License
 
-Hardcoder is under the BSD license. See the [LICENSE](./LICENSE) file for details.
+Hardcoder is under the BSD license. See the [LICENSE](https://github.com/Tencent/Hardcoder/blob/master/LICENSE) file for details.
 
 
 
