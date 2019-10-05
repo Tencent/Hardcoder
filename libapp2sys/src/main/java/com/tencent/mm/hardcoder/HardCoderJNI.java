@@ -171,6 +171,9 @@ public class HardCoderJNI {
      * whether the phone supports Hardcoder
      */
     private static boolean checkEnv = false;
+    public static void setCheckEnv(boolean env){
+        checkEnv = env;
+    }
     public static boolean isCheckEnv() {
         return checkEnv;
     }
@@ -464,6 +467,8 @@ public class HardCoderJNI {
 
     private static native int getTickRate();
 
+    public static native long getParameters(byte[] data, int tid, long timestamp);
+
 
     public final static String SERVER_PROP_KEY = "persist.sys.hardcoder.name";
     public final static String CLIENT_SOCK = ".hardcoder.client.sock";
@@ -505,6 +510,12 @@ public class HardCoderJNI {
     public static void putRequestStatusHashMap(long requestId, HardCoderCallback.RequestStatus requestStatus){
         if(requestStatusCallback != null){
             requestStatusCallback.put(requestId, requestStatus);
+        }
+    }
+
+    public static void putFuncRetHashMap(long requestId, HardCoderCallback.FuncRetCallback callback){
+        if(funcRetCallback != null){
+            funcRetCallback.put(requestId, callback);
         }
     }
 

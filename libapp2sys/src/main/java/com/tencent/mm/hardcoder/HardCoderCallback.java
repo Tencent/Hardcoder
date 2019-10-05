@@ -23,7 +23,7 @@ package com.tencent.mm.hardcoder;
 public class HardCoderCallback {
 
     /**
-     * callback for requestUnify request
+     * callback for localsocket connect status
      */
     public interface ConnectStatusCallback {
         void onConnectStatus(boolean isConnect);
@@ -38,12 +38,15 @@ public class HardCoderCallback {
     }
 
     /**
-     * callback for report
+     * callback for scene value
      */
     public interface SceneReportCallback{
         void sceneReport(int scene, long action);
     }
 
+    /**
+     * RequestStatus mark the request info when use startPerformance
+     */
     public static class RequestStatus {
         public int scene;
         public long action;
