@@ -74,7 +74,6 @@ private :
                 AMCReqHeader *pHeader = (AMCReqHeader *)(recvCache->reqHeaderBuf);
                 if (pHeader->begin != HEADER_BEGIN) {
                     perr("Check Header BEGIN failed:0x%x server:0x%x", pHeader->begin, HEADER_BEGIN);
-                    //TODO  DISCONNECT THIS CLIENT
                     delete recvCache;
                     mapRecvCache.erase(fd);
                     return -1;

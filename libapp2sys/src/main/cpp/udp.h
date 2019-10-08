@@ -358,27 +358,8 @@ private:
             deleteTimeoutEvent(&ss->finTimeoutEvent);
             delete ss->finTimeoutEvent.udpPkg;
             m_mapSender.erase(iSender);
-
-//          todo when clean all
-//            delete ss;
-//            close(m_fd);
-//            recvEvent(EVENT_CLOSED, NULL, 0L, NULL, 0);
-//            m_fd = 0;
             return 0;
         }
-
-//        todo when to close sender
-//        if (m_fdCloseRequested) { // someone call closeSocket
-//            for (map<long, Sender *>::iterator it = m_mapSender.begin(); it != m_mapSender.end(); it++) {
-//
-//                Sender *s = it->second;
-//                if (s->dataQueue.empty() && windowAllEmpty(s)) {
-//                    s->seq += 1;
-//                    sendPackage(&(it->second)->toaddr, PACKAGE_FIN, s->seq, &udpPkg);
-//                    s->status = FIN_SENT;
-//                }
-//            }
-//        }
 
         if (ss->status == SYN_SENT) {
             if (ss->synTimeoutEvent.udpPkg == NULL || udpPkg.seq != ss->synTimeoutEvent.udpPkg->seq) {
@@ -403,7 +384,7 @@ private:
             delete timeoutEvent->udpPkg;
             timeoutEvent->udpPkg = NULL;
 
-            if (udpPkg.totallen == udpPkg.offset) { //todo check more
+            if (udpPkg.totallen == udpPkg.offset) {
                 recvEvent(EVENT_SESSION_FINISH, &sender, udpPkg.sessionid, NULL, 0);
             }
             return 0;
@@ -532,11 +513,11 @@ private:
     int dataRecv(UdpPkg *udpPkg, Receiver *rs) {
         std::pair<uint32_t, uint8_t *> *sessionPair = rs->sessionMap.count(udpPkg->sessionid) ? rs->sessionMap[udpPkg->sessionid] : NULL;
 
-        if (sessionPair == NULL && udpPkg->offset != 0) { //todo how to tell sender
+        if (sessionPair == NULL && udpPkg->offset != 0) {
             perr("Not session:%d sessionPair:%d first package offset:%u", TOINT(udpPkg->sessionid), (int) ((uint64_t)sessionPair & 0xffffffffL) , udpPkg->offset);
             return 0;
         }
-        if (sessionPair && udpPkg->offset != sessionPair->first) { //todo how to tell sender
+        if (sessionPair && udpPkg->offset != sessionPair->first) {
             perr("session:%d offset error:%u local:%u", TOINT(udpPkg->sessionid), udpPkg->offset, sessionPair->first);
             return 0;
         }

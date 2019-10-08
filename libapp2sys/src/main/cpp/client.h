@@ -182,7 +182,6 @@ private:
 
                     if (pHeader->begin != HEADER_BEGIN) {
                         perr("Check Header BEGIN failed:0x%x server:0x%x", pHeader->begin, HEADER_BEGIN);
-                        //TODO  DISCONNECT THIS CLIENT
                         if (respPayload) {
                             delete[] respPayload;
                         }

@@ -112,7 +112,7 @@ private:
             return;
         }
         recvEvent(EVENT_ERROR, recvFd, 0, mapUid[recvFd].first, mapUid[recvFd].second.c_str(), NULL, 0);
-        close(recvFd); //todo clean select & mapuid
+        close(recvFd);
     }
 
     // #lizard forgives
@@ -378,7 +378,6 @@ public:
     }
 
     // find client socket fd
-    // TODO non-threadsafety
     int findFdByUid(uint32_t uid) {
         pdbg("findFdByUid uid:%d size:%d", uid, static_cast<int>(mapUid.size()));
         if (mapUid.empty()) {

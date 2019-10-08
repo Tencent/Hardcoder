@@ -9,7 +9,6 @@ if (plugins.hasPlugin('com.android.library')) {
     // Java library mode
     extensionClass = WeChatJavaLibraryPublishExtension.class
 } else {
-    // TODO: Support more languages
     throw new GradleException('This plugin must be applied after "java" or "com.android.library" plugin')
 }
 
@@ -291,7 +290,6 @@ class WeChatJavaLibraryPublishExtension extends WeChatPublishExtension {
             classifier = 'javadoc'
             from javadocTask.destinationDir
         }
-        // TODO: upload javadoc to documentation site
 
         project.publishing.publications {
             "${publicationName}" (MavenPublication) {
