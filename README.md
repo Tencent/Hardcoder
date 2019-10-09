@@ -49,6 +49,7 @@ Hardcoder framework could averagely optimize the performance of Wechat by 10%-30
 3. Hardcoder testapp testing instruction——[https://github.com/Tencent/Hardcoder/wiki/Hardcoder-Testapp测试指南](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-Testapp测试指南)
 4. Hardcoder Application Instruction——[https://github.com/Tencent/Hardcoder/wiki/Hardcoder-接入指南](https://github.com/Tencent/Hardcoder/wiki/Hardcoder-接入指南)
 5. FAQ——https://github.com/Tencent/Hardcoder/wiki/FAQ
+6. Hardcoder for Android API References——https://tencent.github.io/Hardcoder/
 
 
 
