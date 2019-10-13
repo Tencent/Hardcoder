@@ -12,7 +12,7 @@
 
 
 
-Hardcoder framework could averagely optimize the performance of Wechat by 10%-30% in terms of Wechat startup, video delivery, mini program startup, and other highly-loaded scenes. Furthermore, it could also averagely optimize the performance of Mobile QQ by 10%-50% in terms of mobile QQ startup, chatting Initialization, picture delivery, and other highly-loaded scenes. The framework now has been applied to mobile brands such as OPPO, vivo, Huawei, XIAOMI, Sumsang, Meizu, etc and covers more than 460 millions devices.  
+Hardcoder framework could averagely optimize the performance of Wechat by 10%-30% in terms of Wechat startup, video delivery, mini program startup, and other highly-loaded scenes. Furthermore, it could also averagely optimize the performance of Mobile QQ by 10%-50% in terms of mobile QQ startup, chatting Initialization, picture delivery, and other highly-loaded scenes. The framework now has been applied to mobile brands such as OPPO, vivo, Huawei, XIAOMI, Samsung, Meizu, etc and covers more than 460 millions devices.
 
 ![readme](https://github.com/Tencent/Hardcoder/wiki/images/readme.jpg)
 
