@@ -142,7 +142,8 @@ static std::string sockaddrToString(struct sockaddr_in addr) {
 }
 
 static sockaddr_in toSockaddr(const char *ip, uint16_t port) {
-    struct sockaddr_in addr = {0};
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(struct sockaddr_in));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
     inet_pton(AF_INET, ip, &(addr.sin_addr));

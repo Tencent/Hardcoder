@@ -84,7 +84,7 @@ static int64_t genReqPack(uint32_t funcid, uint8_t *data, int dataLen, uint8_t *
         *outPack = buf;
         *outLen = totalLen;
 
-        pdbg("genReqPack json header len:%d, requestid:%lld", header->headerlen, header->requestid);
+        pdbg("genReqPack json header len:%d, requestid:%ld", header->headerlen, header->requestid);
 
         return header->requestid;
     } else {//proto
@@ -108,7 +108,7 @@ static int64_t genReqPack(uint32_t funcid, uint8_t *data, int dataLen, uint8_t *
         *outPack = buf;
         *outLen = totalLen;
 
-        pdbg("genReqPack pb header len:%zu requestid:%lld", sizeof(AMCReqHeader), header->requestid);
+        pdbg("genReqPack pb header len:%zu requestid:%ld", sizeof(AMCReqHeader), header->requestid);
         return header->requestid;
     }
 
@@ -162,7 +162,7 @@ static int64_t genRespPack(uint32_t funcid, uint32_t retCode, uint64_t requestId
         struct timespec ts = {0, 0};
         clock_gettime(CLOCK_BOOTTIME_ALARM, &ts);
         p->timestamp = (static_cast<int64_t>(ts.tv_sec) * 1000 * 1000 * 1000) + ts.tv_nsec;
-        pdbg("genRespPack json funcid:%d timestamp:%d ms requestId:%lld", funcid, TOINT(p->timestamp/1000000L), requestId);
+        pdbg("genRespPack json funcid:%d timestamp:%d ms requestId:%ld", funcid, TOINT(p->timestamp/1000000L), requestId);
         p->begin =  HEADER_BEGIN;
         p->version = HEADER_VERSION;
 
@@ -186,7 +186,7 @@ static int64_t genRespPack(uint32_t funcid, uint32_t retCode, uint64_t requestId
         struct timespec ts = {0, 0};
         clock_gettime(CLOCK_BOOTTIME_ALARM, &ts);
         p->timestamp = (static_cast<int64_t>(ts.tv_sec) * 1000 * 1000 * 1000) + ts.tv_nsec;
-        pdbg("genRespPack proto funcid:%d timestamp:%d ms requestId:%lld", funcid, TOINT(p->timestamp/1000000L), requestId);
+        pdbg("genRespPack proto funcid:%d timestamp:%d ms requestId:%ld", funcid, TOINT(p->timestamp/1000000L), requestId);
         p->begin =  HEADER_BEGIN;
         p->version = HEADER_VERSION;
 
