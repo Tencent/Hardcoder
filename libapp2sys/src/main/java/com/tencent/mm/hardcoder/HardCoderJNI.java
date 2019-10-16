@@ -131,6 +131,7 @@ public class HardCoderJNI {
     public final static int CLIENT_CONNECT = -20000;
     public final static int CLIENT_DISCONNECT = -20001;
     public final static int ERR_CLIENT_ALREADY_INIT = -20002;
+    public final static int ERR_UNAUTHORIZED = -10001;
 
     /**
      * APP SCENE, define by app
@@ -528,13 +529,15 @@ public class HardCoderJNI {
         }
         if(funcRetCallback != null){
             callback = funcRetCallback.remove(requestId);
+            if(callback != null) {
+                callback.onFuncRet(callbackType, requestId, retCode, funcId, dataType, buffer);
+            }
         }
-        HardCoderLog.i(TAG, "onRequestCallback, funcId:" + funcId + ", requestId:" + requestId +
-                ", retCode:" + retCode + ", requestStatus:" +
-                (requestStatus == null ? "" : requestStatus.toString()) + ", callback:" +
-                (callback == null ? "false" : "true"));
-        if(callback != null) {
-            callback.onFuncRet(callbackType, requestId, retCode, funcId, dataType, buffer);
+        if(requestStatus != null || callback != null) {
+            HardCoderLog.i(TAG, "onRequestCallback, funcId:" + funcId + ", requestId:" + requestId +
+                    ", retCode:" + retCode + ", requestStatus:" +
+                    (requestStatus == null ? "null" : requestStatus.toString()) + ", funcRetCallback:" +
+                    (callback == null ? "false" : "true"));
         }
     }
 

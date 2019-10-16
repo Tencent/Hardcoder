@@ -162,21 +162,5 @@
             android:text="stopPerformace"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:text="test multi process"
-            />
-
-        <Button
-            android:id="@+id/multiProcess"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:text="multiProcess"
-            />
     </LinearLayout>
 </ScrollView>

@@ -65,14 +65,14 @@ public class HardCoderCallback {
 
         @Override
         public String toString() {
-            StringBuilder stringBuilder = new StringBuilder("RequestStatus, ")
+            StringBuilder stringBuilder = new StringBuilder("[RequestStatus, ")
                     .append("scene:").append(scene)
                     .append(", action:").append(action)
                     .append(", cpulevel:").append(cpulevel)
                     .append(", gpulevel:").append(gpulevel)
                     .append(", iolevel:").append(iolevel)
                     .append(", bindtids size:").append(bindtids.length);
-            return stringBuilder.toString();
+            return stringBuilder.append("]").toString();
         }
     }
 }

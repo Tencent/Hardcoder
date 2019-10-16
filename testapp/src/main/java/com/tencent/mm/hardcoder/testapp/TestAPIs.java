@@ -21,7 +21,6 @@
 package com.tencent.mm.hardcoder.testapp;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -32,17 +31,15 @@ import com.tencent.mm.hardcoder.HardCoderCallback;
 import com.tencent.mm.hardcoder.HardCoderJNI;
 import com.tencent.mm.hardcoder.HardCoderLog;
 
-import java.math.BigDecimal;
-
 import static com.tencent.mm.hardcoder.testapp.PITest.pitest;
 
 /**
- * test activity main
+ * test Hardcoder APIs
  * test native method in hardcoder
  */
-public class MainActivity extends Activity {
+public class TestAPIs extends Activity {
 
-    private final static String TAG = "hardcoder.MainActivity";
+    private final static String TAG = "Hardcoder.TestAPIs";
 
     /**
      * scene and action value for test
@@ -60,7 +57,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.test_apis);
 
 
         /**
@@ -81,7 +78,7 @@ public class MainActivity extends Activity {
                                         fv.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(MainActivity.this, "initHardCoder callback, server socket name:" +
+                                                Toast.makeText(TestAPIs.this, "initHardCoder callback, server socket name:" +
                                                         remote + ", isConnectSuccess:" + isConnect, Toast.LENGTH_LONG).show();
                                             }
                                         });
@@ -118,7 +115,7 @@ public class MainActivity extends Activity {
                             fv.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(MainActivity.this, "checkPermission, isSuccess:" + isSuccess, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(TestAPIs.this, "checkPermission, isSuccess:" + isSuccess, Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
@@ -158,14 +155,14 @@ public class MainActivity extends Activity {
                         long s = System.currentTimeMillis();
                         //模拟重度计算场景，比较耗cpu操作
                         for(int i = 0; i < 1000; i++){
-                            pitest();
+                            pitest(i);
                         }
                         HardCoderLog.i(TAG, "requestCpuHighFreq, requestId:" + requestId + ", take " +
                                 (System.currentTimeMillis() - s) + " ms");
                         fv.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "requestCpuHighFreq, requestId:" + requestId, Toast.LENGTH_LONG).show();
+                                Toast.makeText(TestAPIs.this, "requestCpuHighFreq, requestId:" + requestId, Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -187,7 +184,7 @@ public class MainActivity extends Activity {
                 fv.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "cancelCpuHighFreq, requestId:" + requestId, Toast.LENGTH_LONG).show();
+                        Toast.makeText(TestAPIs.this, "cancelCpuHighFreq, requestId:" + requestId, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -210,14 +207,14 @@ public class MainActivity extends Activity {
                         long s = System.currentTimeMillis();
                         //模拟重度计算场景，比较耗cpu操作
                         for(int i = 0; i < 1000; i++){
-                            pitest();
+                            pitest(i);
                         }
                         HardCoderLog.i(TAG, "requestGpuHighFreq, requestId:" + requestId + " take " +
                                 (System.currentTimeMillis() - s) + "ms");
                         fv.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "requestGpuHighFreq, requestId:" + requestId,
+                                Toast.makeText(TestAPIs.this, "requestGpuHighFreq, requestId:" + requestId,
                                         Toast.LENGTH_LONG).show();
                             }
                         });
@@ -240,7 +237,7 @@ public class MainActivity extends Activity {
                 fv.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "cancelGpuHighFreq, requestId:" + requestId,
+                        Toast.makeText(TestAPIs.this, "cancelGpuHighFreq, requestId:" + requestId,
                                 Toast.LENGTH_LONG).show();
                     }
                 });
@@ -265,14 +262,14 @@ public class MainActivity extends Activity {
                         long s = System.currentTimeMillis();
                         //模拟重度计算场景，比较耗cpu操作
                         for(int i = 0; i < 1000; i++){
-                            pitest();
+                            pitest(i);
                         }
                         HardCoderLog.i(TAG, "requestCpuCoreForThread, requestId:" + requestId + " take " +
                                 (System.currentTimeMillis() - s) + "ms");
                         fv.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "requestCpuCoreForThread, requestId:" + requestId,
+                                Toast.makeText(TestAPIs.this, "requestCpuCoreForThread, requestId:" + requestId,
                                         Toast.LENGTH_LONG).show();
                             }
                         });
@@ -296,7 +293,7 @@ public class MainActivity extends Activity {
                 fv.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "cancelCpuCoreForThread, requestId:" + requestId, Toast.LENGTH_LONG).show();
+                        Toast.makeText(TestAPIs.this, "cancelCpuCoreForThread, requestId:" + requestId, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -317,7 +314,7 @@ public class MainActivity extends Activity {
                 fv.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "requestHighIOFreq, requestId:" + requestId, Toast.LENGTH_LONG).show();
+                        Toast.makeText(TestAPIs.this, "requestHighIOFreq, requestId:" + requestId, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -334,7 +331,7 @@ public class MainActivity extends Activity {
                 fv.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this, "cancelHighIOFreq:" + requestId, Toast.LENGTH_LONG).show();
+                        Toast.makeText(TestAPIs.this, "cancelHighIOFreq:" + requestId, Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -381,7 +378,7 @@ public class MainActivity extends Activity {
                                 //模拟重度计算场景，比较耗cpu操作
                                 for (int i = 0; i < 50; i++){
                                     for (int j = 0; j < 10; j++){
-                                        pitest();
+                                        pitest(i);
                                     }
                                     try {
                                         Thread.sleep(50);
@@ -394,7 +391,7 @@ public class MainActivity extends Activity {
                                 fv.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(MainActivity.this, "startPerformance, ret:" + ret + ", thread id:" +
+                                        Toast.makeText(TestAPIs.this, "startPerformance, ret:" + ret + ", thread id:" +
                                                 android.os.Process.myTid() + ", " + threadId[0], Toast.LENGTH_LONG).
                                                 show();
                                     }
@@ -407,7 +404,7 @@ public class MainActivity extends Activity {
                         //模拟重度计算场景，比较耗cpu操作
                         for (int i = 0; i < 50; i++){
                             for (int j = 0; j < 50; j++){
-                                pitest();
+                                pitest(i);
                             }
                             try {
                                 Thread.sleep(50);
@@ -450,7 +447,7 @@ public class MainActivity extends Activity {
                         //模拟重度计算场景，比较耗cpu操作
                         for (int i = 0; i < 50; i++){
                             for (int j = 0; j < 10; j++){
-                                pitest();
+                                pitest(i);
                             }
                             try {
                                 Thread.sleep(50);
@@ -463,7 +460,7 @@ public class MainActivity extends Activity {
                         fv.post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MainActivity.this, "requestUnifyCpuIOThreadCore:" + requestId + " time:%d" +
+                                Toast.makeText(TestAPIs.this, "requestUnifyCpuIOThreadCore:" + requestId + " time:%d" +
                                         time, Toast.LENGTH_LONG).show();
                             }
                         });
@@ -486,93 +483,7 @@ public class MainActivity extends Activity {
         });
 
 
-
-
-        //跳转到第二测试页面
-        ((Button) findViewById(R.id.multiProcess)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, SecondActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
 }
 
-/**
- * calculate PI to test CPU
- */
-class PITest {
-    public static double test3() {
-        double Pi = 4;
-        boolean plus = false;
-        for (int i = 3; i < 10000000; i += 2) {
-            if (plus) {
-                Pi += 4.0 / i;
-            } else {
-                Pi -= 4.0 / i;
-            }
-            plus = !plus;
-        }
-        return Pi;
-    }
-
-    public static double test2() {
-        int i;
-        int nThrows = 0;
-        int nSuccess = 0;
-        double x = 0;
-        double y = 0;
-
-        for (i = 0; i < 1000000; i++) {
-            x = Math.random();
-            y = Math.random();
-            nThrows++;
-            if (x * x + y * y <= 1) {
-                nSuccess++;
-            }
-        }
-        return 4 * (double) nSuccess / (double) nThrows;
-    }
-
-
-    private static int n = 100;//小数点后100位
-
-    public static String pitest() {
-        BigDecimal part1 = arctan(57).multiply(new BigDecimal(176));
-        BigDecimal part2 = arctan(239).multiply(new BigDecimal(28));
-        BigDecimal part3 = arctan(682).multiply(new BigDecimal(-48));
-        BigDecimal part4 = arctan(12943).multiply(new BigDecimal(96));
-
-        BigDecimal part = part1.add(part2).add(part3).add(part4);
-        return part.toString();
-    }
-
-    public static BigDecimal arctan(int input) {
-        int n2 = n + 2;//为了防误差
-
-        BigDecimal result = BigDecimal.ZERO;
-        BigDecimal xsquare = new BigDecimal(input * input);
-        BigDecimal bigx = new BigDecimal(input);
-        BigDecimal temp;
-        BigDecimal res = BigDecimal.ONE.divide(bigx, n2, BigDecimal.ROUND_HALF_EVEN);
-
-        boolean b = true;
-        for (int i = 1; ; i += 2) {
-            temp = res.divide(new BigDecimal(i), n2, BigDecimal.ROUND_HALF_EVEN);
-            //根据莱布尼兹级数结果=0时返回
-            if (temp.compareTo(BigDecimal.ZERO) == 0) {
-                break;
-            }
-            if (b) {
-                result = result.add(temp);//加
-            } else {
-                result = result.subtract(temp);//减
-            }
-            b = !b;
-            res = res.divide(xsquare, n2, BigDecimal.ROUND_HALF_EVEN);
-        }
-        return result;
-    }
-}
