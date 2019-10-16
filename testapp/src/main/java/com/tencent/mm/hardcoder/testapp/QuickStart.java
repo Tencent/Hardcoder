@@ -98,9 +98,9 @@ public class QuickStart extends Activity {
                 //cert为testapp在OPPO手机上生成的key,具体值请向厂商申请生成
                 //manufacture和cert均为数组，可同时传多个厂商的值
                 String[] manufactures = {"OPPO"};
-                String[] certs = {"gAnwcqfqFGGwTgX2MwdiBwikz9o8N/Tggq7pC6FuUaWME6/FbcMgFZFsFJR47P0Wo9My6" +
-                        "cVYjotaa7njDlrGBIQ1PeSGPxiSN1LaC2tpRcOTzU8K1eUry3x/A0FdzM/gt+g9TEtuTH4WvhjVf3f" +
-                        "qbnQjKrSl1jsOKIjn/4FtWsg="};
+                String[] certs = {"K6dLGcYfPdHbdbnOwbXe7tXc3sySDV0IZoJ4u7CSB7yPpSJ2xb2lrHbHyIwrzNhuc88kuehvY" +
+                        "MQhVsx6X8nOks0lfvTyNoOOYpX/3UinFnbSPvlXOt9U+v3sXhJPqbU7zR6fjghJ" +
+                        "hfZYxSs+lOMgg1qwv0A0duXMEJWCzU+tnZ4="};
                 final long requestId = HardCoderJNI.checkPermission(manufactures, certs,
                         new HardCoderCallback.FuncRetCallback() {
                         @Override
