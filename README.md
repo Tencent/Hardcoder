@@ -60,3 +60,6 @@ Hardcoder is under the BSD license. See the [LICENSE](https://github.com/Tencent
 
 
 
+If you have any questions，welcome to join QQ group to contact us.
+
+![qqgroup_qrcode.png](https://github.com/Tencent/Hardcoder/wiki/images/qqgroup_qrcode.png)
