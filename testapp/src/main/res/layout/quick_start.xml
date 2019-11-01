@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,19 +16,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:textSize="20dp"
-            android:text="Quick Start"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:textSize="16dp"
-            android:text="You can read the guide on github." />
+            android:textSize="14dp"
+            android:text="启动后请等待约 5s 待 CPU 稳定后再进行测试。测试带 Hardcoder 请求时请在请求时间结束后再进行下一次请求。" />
 
         <TextView
             android:layout_width="match_parent"
@@ -38,7 +28,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:text="1. Click initHardCoder to create socket." />
+            android:text="1. 点击initHardCoder 初始化 Hardcoder 连接。" />
         <Button
             android:id="@+id/init_hardCoder"
             android:layout_width="match_parent"
@@ -63,23 +53,23 @@
                 android:layout_marginRight="2dp"/>
         </LinearLayout>
 
-
-
-
+        <!--打开网页-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:text="2. Click checkPermission to check whether this app get authentication to use Hardcoder at this device." />
+            android:text="2. 场景1：在新进程中打开 webview，Hardcoder 请求时间 5s。" />
+
         <Button
-            android:id="@+id/check_permission"
+            android:id="@+id/test_open_webview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textAllCaps="false"
-            android:text="checkPermission" />
+            android:text="Open Webview"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -89,30 +79,144 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:text="result:"/>
+                android:text="runtime:"/>
             <TextView
-                android:id="@+id/check_permission_result"
+                android:id="@+id/open_webview_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/test_HC_open_webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAllCaps="false"
+            android:text="Open Webview with HardCoder"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:text="May have no response when it doesn't support this API, just continue."/>
+                android:text="runtime:"/>
+            <TextView
+                android:id="@+id/HC_open_webview_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
         </LinearLayout>
 
+
+        <!--打开视频-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:text="3. Click startPerformance to run test task using Hardcoder." />
+            android:text="3. 场景2：在新进程中打开视频，Hardcoder 请求时间 5s。" />
+
         <Button
-            android:id="@+id/start_performance_with_hc"
+            android:id="@+id/test_open_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAllCaps="false"
+            android:text="Open video"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:text="runtime:"/>
+            <TextView
+                android:id="@+id/open_video_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/test_HC_open_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAllCaps="false"
+            android:text="Open video with HardCoder"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:text="runtime:"/>
+            <TextView
+                android:id="@+id/HC_open_video_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
+        </LinearLayout>
+
+
+
+
+        <!--复杂运算-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="4. 场景3：进行较复杂计算，显示结果时间时会主动结束 Hardcoder 请求，即可进行下一次测试。" />
+        <Button
+            android:id="@+id/start_performance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:textAllCaps="false"
-            android:text="startPerformance, Hardcoder is opened"/>
+            android:text="Arithmetic test"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:text="runtime:"/>
+            <TextView
+                android:id="@+id/start_performance_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/start_performance_with_hc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAllCaps="false"
+            android:text="Arithmetic test with HardCoder"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,39 +236,6 @@
                 android:layout_marginRight="2dp"/>
         </LinearLayout>
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:text="4. Click startPerformance to run test task without using Hardcoder." />
-        <Button
-            android:id="@+id/start_performance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textAllCaps="false"
-            android:text="startPerformance, Hardcoder is closed"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:text="runtime:"/>
-            <TextView
-                android:id="@+id/start_performance_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"/>
-        </LinearLayout>
 
         <Button
             android:id="@+id/more_api"

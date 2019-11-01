@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -25,11 +24,18 @@
         <activity android:name=".QuickStart">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".TestAPIs"></activity>
+        <activity android:name=".TestAPIs"/>
+        <activity
+            android:name=".TestWebView"
+            android:process=":testWebView">
+        </activity>
+        <activity
+            android:name=".TestVideo"
+            android:process=":testVideo">
+        </activity>
     </application>
 
 </manifest>

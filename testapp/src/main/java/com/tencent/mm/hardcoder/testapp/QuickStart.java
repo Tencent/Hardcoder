@@ -49,10 +49,29 @@ public class QuickStart extends Activity {
     private final static int SCENE_TEST = 101;
     private final static long ACTION_TEST = 1 << 0;
 
+    public final static int REQUEST_CODE_WEBVIEW_WITHOUT_HC = 1;
+    public final static int REQUEST_CODE_WEBVIEW_WITH_HC = 2;
+    public final static int REQUEST_CODE_VIDEO_WITHOUT_HC = 3;
+    public final static int REQUEST_CODE_VIDEO_WITH_HC = 4;
+
+    public static long testWebViewStartTime = 0L;
+    public static long testHCWebViewStartTime = 0L;
+
+    public static long testVideoStartTime = 0L;
+    public static long testHCVideoStartTime = 0L;
+
+
+    private TextView openWebViewTimeTextView;
+    private TextView hcOpenWebViewTimeTextView;
+
+    private TextView openVideoTimeTextView;
+    private TextView hcOpenVideoTimeTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quick_start);
+        HardCoderJNI.setHcDebug(true);
 
         /**
          * test initHardCoder
@@ -62,7 +81,6 @@ public class QuickStart extends Activity {
             @Override
             public void onClick(View view) {
                 final View fv = view;
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -71,6 +89,19 @@ public class QuickStart extends Activity {
                                     @Override
                                     public void onConnectStatus(final boolean isConnect) {
                                         HardCoderLog.i(TAG, "initHardCoder callback, isConnectSuccess:" + isConnect);
+                                        //manufacture为厂商，cert为testapp在OPPO手机上生成的key,具体值请向厂商申请生成
+                                        //manufacture和cert均为数组，可同时传多个厂商的值
+                                        String[] manufactures = {"OPPO"};
+                                        String[] certs = {"K6dLGcYfPdHbdbnOwbXe7tXc3sySDV0IZoJ4u7CSB7yPpSJ2xb2lrHbHyIwrzNhuc88kuehvY" +
+                                                "MQhVsx6X8nOks0lfvTyNoOOYpX/3UinFnbSPvlXOt9U+v3sXhJPqbU7zR6fjghJ" +
+                                                "hfZYxSs+lOMgg1qwv0A0duXMEJWCzU+tnZ4="};
+                                        final long requestId = HardCoderJNI.checkPermission(manufactures, certs,
+                                                new HardCoderCallback.FuncRetCallback() {
+                                                    @Override
+                                                    public void onFuncRet(int callbackType, long requestId, int retCode, int funcId, int dataType, byte[] buffer) {
+                                                        HardCoderLog.i(TAG, "checkpermission callback, retCode:" + retCode);
+                                                    }
+                                                });
                                         fv.post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -85,85 +116,63 @@ public class QuickStart extends Activity {
             }
         });
 
-        /**
-         * test checkPermission
-         * manufacture and certifacaion are arrays
-         */
-        final TextView checkPermissionResultTextView = ((TextView) findViewById(R.id.check_permission_result));
-        ((Button) findViewById(R.id.check_permission)).setOnClickListener(new View.OnClickListener() {
-            @Override
+
+        openWebViewTimeTextView = ((TextView) findViewById(R.id.open_webview_time));
+        hcOpenWebViewTimeTextView = ((TextView) findViewById(R.id.HC_open_webview_time));
+
+        ((Button) findViewById(R.id.test_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                final View fv = view;
-                //manufacture为厂商
-                //cert为testapp在OPPO手机上生成的key,具体值请向厂商申请生成
-                //manufacture和cert均为数组，可同时传多个厂商的值
-                String[] manufactures = {"OPPO"};
-                String[] certs = {"K6dLGcYfPdHbdbnOwbXe7tXc3sySDV0IZoJ4u7CSB7yPpSJ2xb2lrHbHyIwrzNhuc88kuehvY" +
-                        "MQhVsx6X8nOks0lfvTyNoOOYpX/3UinFnbSPvlXOt9U+v3sXhJPqbU7zR6fjghJ" +
-                        "hfZYxSs+lOMgg1qwv0A0duXMEJWCzU+tnZ4="};
-                final long requestId = HardCoderJNI.checkPermission(manufactures, certs,
-                        new HardCoderCallback.FuncRetCallback() {
-                        @Override
-                        public void onFuncRet(int callbackType, long requestId, int retCode, int funcId, int dataType, byte[] buffer) {
-                            final boolean isSuccess = (retCode == 0 ? true : false);
-                            final boolean isNotSupport = (retCode == HardCoderJNI.ERR_UNAUTHORIZED ? true : false);
-                            HardCoderLog.i(TAG, "checkpermission callback, retCode:" + retCode);
-                            fv.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    checkPermissionResultTextView.setText(isSuccess ? "Success" : (isNotSupport ? "This device not support checkPermission api, just ignore and continue." : "Failed, testapp doesn't get authentication to use Hardcoder at this device."));
-                                }
-                            });
-                        }
-                    });
-                HardCoderLog.i(TAG, "checkPermission, requestId:" + requestId);
+                testWebViewStartTime = System.currentTimeMillis();
+                Intent intent = new Intent();
+                intent.setClass(QuickStart.this, TestWebView.class);
+                startActivityForResult(intent, REQUEST_CODE_WEBVIEW_WITHOUT_HC);
+
             }
         });
 
-        HardCoderJNI.setHcDebug(true);
-
-
-        /**
-         * test startPerformance
-         */
-        final TextView startPerformanceHCTimeTextView = ((TextView) findViewById(R.id.start_performance_hc_time));
-        ((Button) findViewById(R.id.start_performance_with_hc)).setOnClickListener(new View.OnClickListener() {
-            @Override
+        ((Button) findViewById(R.id.test_HC_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                final View fv = view;
-                startPerformanceHCTimeTextView.setText("waiting");
-                Thread s = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final int[] threadId = new int[1];
-                        threadId[0] = android.os.Process.myTid();
-                        final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
-                                HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
-                                new int[]{android.os.Process.myTid()}, 10000, SCENE_TEST,
-                                ACTION_TEST, android.os.Process.myTid(), TAG);
-                        long s = System.currentTimeMillis();
-                        //模拟重度计算场景，比较耗cpu操作
-                        test();
-                        final long costTime = System.currentTimeMillis() - s;
-                        HardCoderLog.i(TAG, "startPerformance HC, take " + costTime + " ms");
-                        fv.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                startPerformanceHCTimeTextView.setText(costTime + "ms");
-                            }
-                        });
-                        HardCoderJNI.stopPerformance(hashCode);
-                    }
-                });
-                s.setName("testHC_startThread");
-                s.start();
+                final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
+                        HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
+                        new int[]{}, 5000, SCENE_TEST,
+                        ACTION_TEST, android.os.Process.myTid(), TAG);
+                testHCWebViewStartTime = System.currentTimeMillis();
+                Intent intent = new Intent();
+                intent.setClass(QuickStart.this, TestWebView.class);
+                startActivityForResult(intent, REQUEST_CODE_WEBVIEW_WITH_HC);
             }
         });
 
-        /**
-         * same test without Hardcoder
-         */
+
+        openVideoTimeTextView = ((TextView) findViewById(R.id.open_video_time));
+        hcOpenVideoTimeTextView = ((TextView) findViewById(R.id.HC_open_video_time));
+
+        ((Button) findViewById(R.id.test_open_video)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                testVideoStartTime = System.currentTimeMillis();
+                Intent intent = new Intent();
+                intent.setClass(QuickStart.this, TestVideo.class);
+                startActivityForResult(intent, REQUEST_CODE_VIDEO_WITHOUT_HC);
+            }
+        });
+
+        ((Button) findViewById(R.id.test_HC_open_video)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
+                        HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
+                        new int[]{}, 10000, SCENE_TEST,
+                        ACTION_TEST, android.os.Process.myTid(), TAG);
+                testHCVideoStartTime = System.currentTimeMillis();
+                Intent intent = new Intent();
+                intent.setClass(QuickStart.this, TestVideo.class);
+                startActivityForResult(intent, REQUEST_CODE_VIDEO_WITH_HC);
+            }
+        });
+
+
         final TextView startPerformanceTimeTextView = ((TextView) findViewById(R.id.start_performance_time));
+        final TextView startPerformanceHCTimeTextView = ((TextView) findViewById(R.id.start_performance_hc_time));
+
         ((Button) findViewById(R.id.start_performance)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,6 +200,40 @@ public class QuickStart extends Activity {
             }
         });
 
+        ((Button) findViewById(R.id.start_performance_with_hc)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final View fv = view;
+
+                startPerformanceHCTimeTextView.setText("waiting");
+                Thread s = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final int[] threadId = new int[1];
+                        threadId[0] = android.os.Process.myTid();
+                        final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
+                                HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
+                                new int[]{android.os.Process.myTid()}, 5000, SCENE_TEST,
+                                ACTION_TEST, android.os.Process.myTid(), TAG);
+                        long s = System.currentTimeMillis();
+                        //模拟重度计算场景，比较耗cpu操作
+                        test();
+                        final long costTime = System.currentTimeMillis() - s;
+                        HardCoderLog.i(TAG, "startPerformance HC, take " + costTime + " ms");
+                        fv.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                startPerformanceHCTimeTextView.setText(costTime + "ms");
+                            }
+                        });
+                        HardCoderJNI.stopPerformance(hashCode);
+                    }
+                });
+                s.setName("testHC_startThread");
+                s.start();
+            }
+        });
+
         /**
          * jump to test more APIs
          */
@@ -203,6 +246,42 @@ public class QuickStart extends Activity {
         });
     }
 
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case REQUEST_CODE_WEBVIEW_WITHOUT_HC:
+                if(data != null) {
+                    long costTime = data.getLongExtra("endTime", 0L) - testWebViewStartTime;
+                    testWebViewStartTime = 0L;
+                    openWebViewTimeTextView.setText(costTime + "ms");
+                }
+                break;
+            case REQUEST_CODE_WEBVIEW_WITH_HC:
+                if(data != null) {
+                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCWebViewStartTime;
+                    testHCWebViewStartTime = 0L;
+                    hcOpenWebViewTimeTextView.setText(hcCostTime + "ms");
+                }
+                break;
+            case REQUEST_CODE_VIDEO_WITHOUT_HC:
+                if(data != null) {
+                    long costTime = data.getLongExtra("endTime", 0L) - testVideoStartTime;
+                    testVideoStartTime = 0L;
+                    openVideoTimeTextView.setText(costTime + "ms");
+                }
+                break;
+            case REQUEST_CODE_VIDEO_WITH_HC:
+                if(data != null) {
+                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCVideoStartTime;
+                    testHCVideoStartTime = 0L;
+                    hcOpenVideoTimeTextView.setText(hcCostTime + "ms");
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 /**
