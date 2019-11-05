@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -47,6 +48,8 @@ public class TestVideo extends Activity {
     public static long endTime = 0L;
     public final static int RESULT_CODE = 0;
 
+    private static boolean isAuto = false;
+
     private MediaPlayer mediaPlayer;
 
     String outPath;
@@ -55,6 +58,7 @@ public class TestVideo extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_video);
+        isAuto = getIntent().getBooleanExtra("isAuto", false);
 
         SurfaceView videoSuf = (SurfaceView) findViewById(R.id.open_video);
         videoSuf.setZOrderOnTop(true);
@@ -94,6 +98,13 @@ public class TestVideo extends Activity {
                     mediaPlayer.start();
                     endTime = System.currentTimeMillis();
                     Toast.makeText(TestVideo.this, "Video load finish, please goBack.", Toast.LENGTH_LONG).show();
+                    if(isAuto){
+                        new Handler().postDelayed(new Runnable(){
+                            public void run() {
+                                exitVideo();
+                            }
+                        }, 2000);
+                    }
                 }
             });
             mediaPlayer.prepareAsync();

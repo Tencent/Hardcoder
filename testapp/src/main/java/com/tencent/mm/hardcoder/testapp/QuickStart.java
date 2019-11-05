@@ -23,6 +23,7 @@ package com.tencent.mm.hardcoder.testapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -51,8 +52,12 @@ public class QuickStart extends Activity {
 
     public final static int REQUEST_CODE_WEBVIEW_WITHOUT_HC = 1;
     public final static int REQUEST_CODE_WEBVIEW_WITH_HC = 2;
-    public final static int REQUEST_CODE_VIDEO_WITHOUT_HC = 3;
-    public final static int REQUEST_CODE_VIDEO_WITH_HC = 4;
+    public final static int REQUEST_CODE_WEBVIEW_AUTO_TEST = 3;
+    public final static int REQUEST_CODE_WEBVIEW_HC_AUTO_TEST = 4;
+    public final static int REQUEST_CODE_VIDEO_WITHOUT_HC = 5;
+    public final static int REQUEST_CODE_VIDEO_WITH_HC = 6;
+    public final static int REQUEST_CODE_VIDEO_AUTO_TEST = 7;
+    public final static int REQUEST_CODE_VIDEO_HC_AUTO_TEST = 8;
 
     public static long testWebViewStartTime = 0L;
     public static long testHCWebViewStartTime = 0L;
@@ -61,11 +66,18 @@ public class QuickStart extends Activity {
     public static long testHCVideoStartTime = 0L;
 
 
-    private TextView openWebViewTimeTextView;
-    private TextView hcOpenWebViewTimeTextView;
+    private TextView openWebViewTimeTextView, hcOpenWebViewTimeTextView, autoTestOpenWebViewTimeTextView;
 
-    private TextView openVideoTimeTextView;
-    private TextView hcOpenVideoTimeTextView;
+    private TextView openVideoTimeTextView, hcOpenVideoTimeTextView, autoTestOpenVideoTimeTextView;
+
+    private final static int TEST_COUNT = 10;
+    private static int testTime = 0;
+
+
+    private static long totalCostTime = 0L;
+    private static long totalHCCostTime = 0L;
+
+    private static int lastWebviewHashCode, lastVideoHashCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,68 +131,79 @@ public class QuickStart extends Activity {
 
         openWebViewTimeTextView = ((TextView) findViewById(R.id.open_webview_time));
         hcOpenWebViewTimeTextView = ((TextView) findViewById(R.id.HC_open_webview_time));
+        autoTestOpenWebViewTimeTextView = ((TextView) findViewById(R.id.open_webview_auto_test_time));
+
 
         ((Button) findViewById(R.id.test_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                testWebViewStartTime = System.currentTimeMillis();
-                Intent intent = new Intent();
-                intent.setClass(QuickStart.this, TestWebView.class);
-                startActivityForResult(intent, REQUEST_CODE_WEBVIEW_WITHOUT_HC);
-
+                testWebView(REQUEST_CODE_WEBVIEW_WITHOUT_HC, false);
             }
         });
 
         ((Button) findViewById(R.id.test_HC_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
-                        HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
-                        new int[]{}, 5000, SCENE_TEST,
-                        ACTION_TEST, android.os.Process.myTid(), TAG);
-                testHCWebViewStartTime = System.currentTimeMillis();
-                Intent intent = new Intent();
-                intent.setClass(QuickStart.this, TestWebView.class);
-                startActivityForResult(intent, REQUEST_CODE_WEBVIEW_WITH_HC);
+                testWebViewHC(REQUEST_CODE_WEBVIEW_WITH_HC, false);
             }
         });
 
 
-        openVideoTimeTextView = ((TextView) findViewById(R.id.open_video_time));
-        hcOpenVideoTimeTextView = ((TextView) findViewById(R.id.HC_open_video_time));
 
-        ((Button) findViewById(R.id.test_open_video)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.auto_test_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                testVideoStartTime = System.currentTimeMillis();
-                Intent intent = new Intent();
-                intent.setClass(QuickStart.this, TestVideo.class);
-                startActivityForResult(intent, REQUEST_CODE_VIDEO_WITHOUT_HC);
-            }
-        });
-
-        ((Button) findViewById(R.id.test_HC_open_video)).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
-                        HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
-                        new int[]{}, 10000, SCENE_TEST,
-                        ACTION_TEST, android.os.Process.myTid(), TAG);
-                testHCVideoStartTime = System.currentTimeMillis();
-                Intent intent = new Intent();
-                intent.setClass(QuickStart.this, TestVideo.class);
-                startActivityForResult(intent, REQUEST_CODE_VIDEO_WITH_HC);
+                testTime = 0;
+                totalCostTime = 0L;
+                totalHCCostTime = 0L;
+                autoTestOpenWebViewTimeTextView.setText("Waiting");
+                openWebViewTimeTextView.setText("");
+                hcOpenWebViewTimeTextView.setText("");
+                testWebView(REQUEST_CODE_WEBVIEW_AUTO_TEST, true);
             }
         });
 
 
-        final TextView startPerformanceTimeTextView = ((TextView) findViewById(R.id.start_performance_time));
-        final TextView startPerformanceHCTimeTextView = ((TextView) findViewById(R.id.start_performance_hc_time));
+//        openVideoTimeTextView = ((TextView) findViewById(R.id.open_video_time));
+//        hcOpenVideoTimeTextView = ((TextView) findViewById(R.id.HC_open_video_time));
+//        autoTestOpenVideoTimeTextView = ((TextView) findViewById(R.id.open_video_auto_test_time));
+//
+//        ((Button) findViewById(R.id.test_open_video)).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                testVideo(REQUEST_CODE_VIDEO_WITHOUT_HC, false);
+//            }
+//        });
+//
+//        ((Button) findViewById(R.id.test_HC_open_video)).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                testVideoHC(REQUEST_CODE_VIDEO_WITH_HC, false);
+//            }
+//        });
+//        ((Button) findViewById(R.id.auto_test_open_video)).setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                testTime = 0;
+//                totalCostTime = 0L;
+//                totalHCCostTime = 0L;
+//                autoTestOpenVideoTimeTextView.setText("Waiting");
+//                testVideo(REQUEST_CODE_VIDEO_AUTO_TEST, true);
+//            }
+//        });
 
-        ((Button) findViewById(R.id.start_performance)).setOnClickListener(new View.OnClickListener() {
+
+        final TextView testArithmeticTimeTextView = ((TextView) findViewById(R.id.test_arithmetic_time));
+        final TextView testArithmeticHCTimeTextView = ((TextView) findViewById(R.id.test_arithmetic_hc_time));
+        final TextView autoTestArithmeticTimeTextView = ((TextView) findViewById(R.id.arithmetic_auto_test_time));
+
+
+        ((Button) findViewById(R.id.test_arithmetic)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final View fv = view;
-                startPerformanceTimeTextView.setText("waiting");
+                testArithmeticTimeTextView.setText("waiting");
                 Thread s = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        try {//delay 一下等cpu稳定下来再执行
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                        }
                         long s = System.currentTimeMillis();
                         //模拟重度计算场景，比较耗cpu操作
                         test();
@@ -190,7 +213,7 @@ public class QuickStart extends Activity {
                         fv.post(new Runnable() {
                             @Override
                             public void run() {
-                                startPerformanceTimeTextView.setText(Long.toString(costTime) + "ms");
+                                testArithmeticTimeTextView.setText(costTime + "ms");
                             }
                         });
                     }
@@ -200,12 +223,12 @@ public class QuickStart extends Activity {
             }
         });
 
-        ((Button) findViewById(R.id.start_performance_with_hc)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.test_hc_arithmetic)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final View fv = view;
 
-                startPerformanceHCTimeTextView.setText("waiting");
+                testArithmeticHCTimeTextView.setText("waiting");
                 Thread s = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -213,8 +236,12 @@ public class QuickStart extends Activity {
                         threadId[0] = android.os.Process.myTid();
                         final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
                                 HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
-                                new int[]{android.os.Process.myTid()}, 5000, SCENE_TEST,
+                                new int[]{android.os.Process.myTid()}, 15000, SCENE_TEST,
                                 ACTION_TEST, android.os.Process.myTid(), TAG);
+                        try {//Hardcoder请求异步，delay 1s方便测试
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                        }
                         long s = System.currentTimeMillis();
                         //模拟重度计算场景，比较耗cpu操作
                         test();
@@ -223,7 +250,7 @@ public class QuickStart extends Activity {
                         fv.post(new Runnable() {
                             @Override
                             public void run() {
-                                startPerformanceHCTimeTextView.setText(costTime + "ms");
+                                testArithmeticHCTimeTextView.setText(costTime + "ms");
                             }
                         });
                         HardCoderJNI.stopPerformance(hashCode);
@@ -231,8 +258,89 @@ public class QuickStart extends Activity {
                 });
                 s.setName("testHC_startThread");
                 s.start();
+
             }
         });
+
+        ((Button) findViewById(R.id.auto_test_arithmetic)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final View fv = view;
+                testTime = 0;
+                totalCostTime = 0L;
+                totalHCCostTime = 0L;
+                autoTestArithmeticTimeTextView.setText("Waiting");
+                testArithmeticTimeTextView.setText("");
+                testArithmeticHCTimeTextView.setText("");
+                Thread s = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(int i = 0; i < TEST_COUNT; i++){
+                            try {//等cpu稳定
+                                Thread.sleep(3000);
+                            } catch (InterruptedException e) {
+                            }
+                            long s = System.currentTimeMillis();
+                            //模拟重度计算场景，比较耗cpu操作
+                            test();
+                            final long costTime = System.currentTimeMillis() - s;
+                            totalCostTime += costTime;
+                            fv.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    testArithmeticTimeTextView.setText(costTime + "ms");
+                                }
+                            });
+                        }
+
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                        }
+
+                        for(int i = 0; i < TEST_COUNT; i++){
+                            final int[] threadId = new int[1];
+                            threadId[0] = android.os.Process.myTid();
+                            final int hashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
+                                    HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
+                                    new int[]{android.os.Process.myTid()}, 15000, SCENE_TEST,
+                                    ACTION_TEST, android.os.Process.myTid(), TAG);
+                            try {//Hardcoder请求异步，delay 1s方便测试
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                            }
+                            long s = System.currentTimeMillis();
+                            //模拟重度计算场景，比较耗cpu操作
+                            test();
+                            final long costTime = System.currentTimeMillis() - s;
+                            totalHCCostTime += costTime;
+                            fv.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    testArithmeticHCTimeTextView.setText(costTime + "ms");
+                                }
+                            });
+                            HardCoderJNI.stopPerformance(hashCode);
+                        }
+
+                        if(TEST_COUNT != 0){
+                            fv.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    testArithmeticTimeTextView.setText("");
+                                    testArithmeticHCTimeTextView.setText("");
+                                    autoTestArithmeticTimeTextView.setText("Finish, average costTime:" + totalCostTime/TEST_COUNT + "ms, HC average costTime:" + totalHCCostTime/TEST_COUNT + "ms");
+                                }
+                            });
+                        }
+                    }
+                });
+                s.setName("test_startThread");
+                s.start();
+            }
+        });
+
+
 
         /**
          * jump to test more APIs
@@ -244,6 +352,69 @@ public class QuickStart extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+
+    private void testWebView(int requestCode, boolean isAuto){
+        openWebViewTimeTextView.setText("waiting");
+        try {//delay 一下等cpu稳定下来再执行
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+        }
+        testWebViewStartTime = System.currentTimeMillis();
+        Intent intent = new Intent();
+        intent.setClass(QuickStart.this, TestWebView.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isAuto", isAuto);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, requestCode);
+    }
+
+    private void testWebViewHC(int requestCode, boolean isAuto){
+        hcOpenWebViewTimeTextView.setText("waiting");
+        lastWebviewHashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
+                HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
+                new int[]{}, 5000, SCENE_TEST,
+                ACTION_TEST, android.os.Process.myTid(), TAG);
+        try {//Hardcoder请求异步，delay 1s方便测试
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
+        testHCWebViewStartTime = System.currentTimeMillis();
+        Intent intent = new Intent();
+        intent.setClass(QuickStart.this, TestWebView.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isAuto", isAuto);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, requestCode);
+    }
+
+    private void testVideo(int requestCode, boolean isAuto){
+        testVideoStartTime = System.currentTimeMillis();
+        Intent intent = new Intent();
+        intent.setClass(QuickStart.this, TestVideo.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isAuto", isAuto);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, requestCode);
+    }
+
+    private void testVideoHC(int requestCode, boolean isAuto){
+        lastVideoHashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
+                HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
+                new int[]{}, 3000, SCENE_TEST,
+                ACTION_TEST, android.os.Process.myTid(), TAG);
+        try {//Hardcoder请求异步，delay 1s方便测试
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
+        testHCVideoStartTime = System.currentTimeMillis();
+        Intent intent = new Intent();
+        intent.setClass(QuickStart.this, TestVideo.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isAuto", isAuto);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -262,6 +433,49 @@ public class QuickStart extends Activity {
                     long hcCostTime = data.getLongExtra("endTime", 0L) - testHCWebViewStartTime;
                     testHCWebViewStartTime = 0L;
                     hcOpenWebViewTimeTextView.setText(hcCostTime + "ms");
+                    if(lastWebviewHashCode != 0){
+                        HardCoderJNI.stopPerformance(lastWebviewHashCode);
+                    }
+                }
+                break;
+
+            case REQUEST_CODE_WEBVIEW_AUTO_TEST:
+                if(data != null) {
+                    long costTime = data.getLongExtra("endTime", 0L) - testWebViewStartTime;
+                    testWebViewStartTime = 0L;
+                    openWebViewTimeTextView.setText(costTime + "ms");
+                    totalCostTime += costTime;
+                    new Handler().postDelayed(new Runnable(){
+                        public void run() {
+                            testWebViewHC(REQUEST_CODE_WEBVIEW_HC_AUTO_TEST, true);
+                        }
+                    }, 3000);
+                }
+                break;
+            case REQUEST_CODE_WEBVIEW_HC_AUTO_TEST:
+                if(data != null) {
+                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCWebViewStartTime;
+                    testHCWebViewStartTime = 0L;
+                    hcOpenWebViewTimeTextView.setText(hcCostTime + "ms");
+                    totalHCCostTime += hcCostTime;
+                    if(lastWebviewHashCode != 0){
+                        HardCoderJNI.stopPerformance(lastWebviewHashCode);
+                    }
+                    testTime ++;
+                    if (testTime >= TEST_COUNT) {
+                        if(testTime == 0){
+                            autoTestOpenWebViewTimeTextView.setText("Error!");
+                        }
+                        openWebViewTimeTextView.setText("");
+                        hcOpenWebViewTimeTextView.setText("");
+                        autoTestOpenWebViewTimeTextView.setText("Finish, average costTime:" + totalCostTime/testTime + "ms, HC average costTime:" + totalHCCostTime/testTime + "ms");
+                    } else {
+                        new Handler().postDelayed(new Runnable(){
+                            public void run() {
+                                testWebView(REQUEST_CODE_WEBVIEW_AUTO_TEST, true);
+                            }
+                        }, 6000);
+                    }
                 }
                 break;
             case REQUEST_CODE_VIDEO_WITHOUT_HC:
@@ -276,6 +490,47 @@ public class QuickStart extends Activity {
                     long hcCostTime = data.getLongExtra("endTime", 0L) - testHCVideoStartTime;
                     testHCVideoStartTime = 0L;
                     hcOpenVideoTimeTextView.setText(hcCostTime + "ms");
+                    if(lastVideoHashCode != 0){
+                        HardCoderJNI.stopPerformance(lastVideoHashCode);
+                    }
+                }
+                break;
+
+            case REQUEST_CODE_VIDEO_AUTO_TEST:
+                if(data != null) {
+                    long costTime = data.getLongExtra("endTime", 0L) - testVideoStartTime;
+                    testVideoStartTime = 0L;
+                    openVideoTimeTextView.setText(costTime + "ms");
+                    totalCostTime += costTime;
+                    new Handler().postDelayed(new Runnable(){
+                        public void run() {
+                            testVideoHC(REQUEST_CODE_VIDEO_HC_AUTO_TEST, true);
+                        }
+                    }, 3000);
+                }
+                break;
+            case REQUEST_CODE_VIDEO_HC_AUTO_TEST:
+                if(data != null) {
+                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCVideoStartTime;
+                    testHCVideoStartTime = 0L;
+                    hcOpenVideoTimeTextView.setText(hcCostTime + "ms");
+                    totalHCCostTime += hcCostTime;
+                    if(lastVideoHashCode != 0){
+                        HardCoderJNI.stopPerformance(lastVideoHashCode);
+                    }
+                    testTime ++;
+                    if (testTime >= TEST_COUNT) {
+                        if(testTime == 0){
+                            autoTestOpenVideoTimeTextView.setText("Error!");
+                        }
+                        autoTestOpenVideoTimeTextView.setText("Finish, average costTime:" + totalCostTime/testTime + "ms, HC average costTime:" + totalHCCostTime/testTime + "ms");
+                    } else {
+                        new Handler().postDelayed(new Runnable(){
+                            public void run() {
+                                testVideo(REQUEST_CODE_VIDEO_AUTO_TEST, true);
+                            }
+                        }, 6000);
+                    }
                 }
                 break;
             default:

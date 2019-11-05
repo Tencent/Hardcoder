@@ -113,23 +113,13 @@
                 android:layout_marginRight="2dp"/>
         </LinearLayout>
 
-
-        <!--打开视频-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:text="3. 场景2：在新进程中打开视频，Hardcoder 请求时间 5s。" />
-
         <Button
-            android:id="@+id/test_open_video"
+            android:id="@+id/auto_test_open_webview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:textAllCaps="false"
-            android:text="Open video"/>
+            android:text="Auto Test Open Webview"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -139,40 +129,98 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:text="runtime:"/>
+                android:text="result:"/>
             <TextView
-                android:id="@+id/open_video_time"
+                android:id="@+id/open_webview_auto_test_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/test_HC_open_video"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textAllCaps="false"
-            android:text="Open video with HardCoder"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:text="runtime:"/>
-            <TextView
-                android:id="@+id/HC_open_video_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"/>
-        </LinearLayout>
+        <!--&lt;!&ndash;打开视频&ndash;&gt;-->
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="2dp"-->
+            <!--android:layout_marginRight="2dp"-->
+            <!--android:text="3. 场景2：在新进程中打开视频，Hardcoder 请求时间 3s。" />-->
 
+        <!--<Button-->
+            <!--android:id="@+id/test_open_video"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:text="Open video"/>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"-->
+                <!--android:text="runtime:"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/open_video_time"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"/>-->
+        <!--</LinearLayout>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/test_HC_open_video"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:text="Open video with HardCoder"/>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"-->
+                <!--android:text="runtime:"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/HC_open_video_time"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"/>-->
+        <!--</LinearLayout>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/auto_test_open_video"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:text="Auto Test Open Video"/>-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"-->
+                <!--android:text="result:"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/open_video_auto_test_time"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="2dp"-->
+                <!--android:layout_marginRight="2dp"/>-->
+        <!--</LinearLayout>-->
 
 
 
@@ -183,9 +231,9 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:text="4. 场景3：进行较复杂计算，显示结果时间时会主动结束 Hardcoder 请求，即可进行下一次测试。" />
+            android:text="3. 场景2：进行较复杂计算，显示结果时间时会主动结束 Hardcoder 请求，即可进行下一次测试。" />
         <Button
-            android:id="@+id/start_performance"
+            android:id="@+id/test_arithmetic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -203,7 +251,7 @@
                 android:layout_marginRight="2dp"
                 android:text="runtime:"/>
             <TextView
-                android:id="@+id/start_performance_time"
+                android:id="@+id/test_arithmetic_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -211,7 +259,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/start_performance_with_hc"
+            android:id="@+id/test_hc_arithmetic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -229,7 +277,32 @@
                 android:layout_marginRight="2dp"
                 android:text="time:"/>
             <TextView
-                android:id="@+id/start_performance_hc_time"
+                android:id="@+id/test_arithmetic_hc_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/auto_test_arithmetic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textAllCaps="false"
+            android:text="Auto Test Arithmetic"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:text="result:"/>
+            <TextView
+                android:id="@+id/arithmetic_auto_test_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"

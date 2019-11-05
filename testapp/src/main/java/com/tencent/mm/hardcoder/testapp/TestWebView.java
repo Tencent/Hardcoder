@@ -23,6 +23,7 @@ package com.tencent.mm.hardcoder.testapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -38,11 +39,13 @@ public class TestWebView extends Activity {
 
     public static long endTime = 0L;
     public final static int RESULT_CODE = 0;
+    private static boolean isAuto = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_webview);
+        isAuto = getIntent().getBooleanExtra("isAuto", false);
 
         final WebView webview = (WebView) findViewById(R.id.open_webview);
         WebSettings webSettings = webview.getSettings();
@@ -56,6 +59,13 @@ public class TestWebView extends Activity {
             public void onPageFinished(WebView view, String url) {
                 endTime = System.currentTimeMillis();
                 Toast.makeText(TestWebView.this, "Webview load finish, please goBack.", Toast.LENGTH_LONG).show();
+                if(isAuto){
+                    new Handler().postDelayed(new Runnable(){
+                        public void run() {
+                            exitWebview();
+                        }
+                    }, 2000);
+                }
             }
         });
         webview.loadUrl("https://github.com/Tencent/Hardcoder");
