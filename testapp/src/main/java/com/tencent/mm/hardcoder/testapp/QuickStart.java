@@ -67,7 +67,6 @@ public class QuickStart extends Activity {
 
 
     private TextView openWebViewTimeTextView, hcOpenWebViewTimeTextView, autoTestOpenWebViewTimeTextView;
-
     private TextView openVideoTimeTextView, hcOpenVideoTimeTextView, autoTestOpenVideoTimeTextView;
 
     private final static int TEST_COUNT = 10;
@@ -76,6 +75,10 @@ public class QuickStart extends Activity {
 
     private static long totalCostTime = 0L;
     private static long totalHCCostTime = 0L;
+
+    private static long[] costTimeArray, hcCostTimeArray;
+
+    private static StringBuilder resultString;
 
     private static int lastWebviewHashCode, lastVideoHashCode;
 
@@ -136,12 +139,14 @@ public class QuickStart extends Activity {
 
         ((Button) findViewById(R.id.test_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                openWebViewTimeTextView.setText("waiting");
                 testWebView(REQUEST_CODE_WEBVIEW_WITHOUT_HC, false);
             }
         });
 
         ((Button) findViewById(R.id.test_HC_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                hcOpenWebViewTimeTextView.setText("waiting");
                 testWebViewHC(REQUEST_CODE_WEBVIEW_WITH_HC, false);
             }
         });
@@ -151,11 +156,12 @@ public class QuickStart extends Activity {
         ((Button) findViewById(R.id.auto_test_open_webview)).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 testTime = 0;
-                totalCostTime = 0L;
-                totalHCCostTime = 0L;
+                costTimeArray = new long[TEST_COUNT];
+                hcCostTimeArray = new long[TEST_COUNT];
+//                totalCostTime = 0L;
+//                totalHCCostTime = 0L;
                 autoTestOpenWebViewTimeTextView.setText("Waiting");
-                openWebViewTimeTextView.setText("");
-                hcOpenWebViewTimeTextView.setText("");
+                resultString = new StringBuilder();
                 testWebView(REQUEST_CODE_WEBVIEW_AUTO_TEST, true);
             }
         });
@@ -269,9 +275,8 @@ public class QuickStart extends Activity {
                 testTime = 0;
                 totalCostTime = 0L;
                 totalHCCostTime = 0L;
+                resultString = new StringBuilder("costTime:\n");
                 autoTestArithmeticTimeTextView.setText("Waiting");
-                testArithmeticTimeTextView.setText("");
-                testArithmeticHCTimeTextView.setText("");
                 Thread s = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -285,13 +290,16 @@ public class QuickStart extends Activity {
                             test();
                             final long costTime = System.currentTimeMillis() - s;
                             totalCostTime += costTime;
+                            resultString.append((i + 1) + ". " + costTime + "ms,   ");
                             fv.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    testArithmeticTimeTextView.setText(costTime + "ms");
+                                    autoTestArithmeticTimeTextView.setText(resultString.toString());
                                 }
                             });
                         }
+
+                        resultString.append("\nHC costTime:\n");
 
                         try {
                             Thread.sleep(5000);
@@ -314,22 +322,23 @@ public class QuickStart extends Activity {
                             test();
                             final long costTime = System.currentTimeMillis() - s;
                             totalHCCostTime += costTime;
+                            resultString.append((i + 1) + ". " + costTime + "ms,   ");
                             fv.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    testArithmeticHCTimeTextView.setText(costTime + "ms");
+                                    autoTestArithmeticTimeTextView.setText(resultString.toString());
                                 }
                             });
                             HardCoderJNI.stopPerformance(hashCode);
                         }
 
                         if(TEST_COUNT != 0){
+                            resultString.append("\nFinish, average costTime:" + totalCostTime/TEST_COUNT +
+                                    "ms, HC average costTime:" + totalHCCostTime/TEST_COUNT + "ms.");
                             fv.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    testArithmeticTimeTextView.setText("");
-                                    testArithmeticHCTimeTextView.setText("");
-                                    autoTestArithmeticTimeTextView.setText("Finish, average costTime:" + totalCostTime/TEST_COUNT + "ms, HC average costTime:" + totalHCCostTime/TEST_COUNT + "ms");
+                                    autoTestArithmeticTimeTextView.setText(resultString.toString());
                                 }
                             });
                         }
@@ -339,8 +348,6 @@ public class QuickStart extends Activity {
                 s.start();
             }
         });
-
-
 
         /**
          * jump to test more APIs
@@ -356,7 +363,6 @@ public class QuickStart extends Activity {
 
 
     private void testWebView(int requestCode, boolean isAuto){
-        openWebViewTimeTextView.setText("waiting");
         try {//delay 一下等cpu稳定下来再执行
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -371,7 +377,7 @@ public class QuickStart extends Activity {
     }
 
     private void testWebViewHC(int requestCode, boolean isAuto){
-        hcOpenWebViewTimeTextView.setText("waiting");
+        //在新的进程打开webview，这里只使用了提频，传空int数组表示不使用绑核
         lastWebviewHashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
                 HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
                 new int[]{}, 5000, SCENE_TEST,
@@ -389,32 +395,61 @@ public class QuickStart extends Activity {
         startActivityForResult(intent, requestCode);
     }
 
-    private void testVideo(int requestCode, boolean isAuto){
-        testVideoStartTime = System.currentTimeMillis();
-        Intent intent = new Intent();
-        intent.setClass(QuickStart.this, TestVideo.class);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isAuto", isAuto);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, requestCode);
-    }
+//    private void testVideo(int requestCode, boolean isAuto){
+//        testVideoStartTime = System.currentTimeMillis();
+//        Intent intent = new Intent();
+//        intent.setClass(QuickStart.this, TestVideo.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putBoolean("isAuto", isAuto);
+//        intent.putExtras(bundle);
+//        startActivityForResult(intent, requestCode);
+//    }
+//
+//    private void testVideoHC(int requestCode, boolean isAuto){
+//        lastVideoHashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
+//                HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
+//                new int[]{}, 3000, SCENE_TEST,
+//                ACTION_TEST, android.os.Process.myTid(), TAG);
+//        try {//Hardcoder请求异步，delay 1s方便测试
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//        }
+//        testHCVideoStartTime = System.currentTimeMillis();
+//        Intent intent = new Intent();
+//        intent.setClass(QuickStart.this, TestVideo.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putBoolean("isAuto", isAuto);
+//        intent.putExtras(bundle);
+//        startActivityForResult(intent, requestCode);
+//    }
 
-    private void testVideoHC(int requestCode, boolean isAuto){
-        lastVideoHashCode = HardCoderJNI.startPerformance(0, HardCoderJNI.CPU_LEVEL_1,
-                HardCoderJNI.IO_LEVEL_1, HardCoderJNI.GPU_LEVEL_1,
-                new int[]{}, 3000, SCENE_TEST,
-                ACTION_TEST, android.os.Process.myTid(), TAG);
-        try {//Hardcoder请求异步，delay 1s方便测试
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+    private void getAveWithoutUnusualVallue(long[] results, long[] hcResults, int testTime){
+        long totalCostTime = 0L;
+        long hcTotalCostTime = 0L;
+        for(int i = 0; i < testTime; i++){
+            totalCostTime += results[i];
+            hcTotalCostTime += hcResults[i];
         }
-        testHCVideoStartTime = System.currentTimeMillis();
-        Intent intent = new Intent();
-        intent.setClass(QuickStart.this, TestVideo.class);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isAuto", isAuto);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, requestCode);
+        long ave = totalCostTime / testTime;
+        long hcAve = hcTotalCostTime / testTime;
+
+
+        int realTestTime = testTime;
+        StringBuilder deleteResult = new StringBuilder();
+        for(int i = 0; i < testTime; i++){
+            if(results[i] > 1.3 * ave || hcResults[i] > 1.3 * hcAve) {//大于平均值1.3倍视为当次测试网络有异常，去掉测试值
+                deleteResult.append((i + 1) + ", ");
+                totalCostTime -= results[i];
+                hcTotalCostTime -= hcResults[i];
+                realTestTime --;
+            }
+        }
+        if(realTestTime < testTime){//重新计算平均值
+            ave = totalCostTime / realTestTime;
+            hcAve = hcTotalCostTime / realTestTime;
+        }
+        resultString.append("Finish, delete unusual results:" + (deleteResult.toString().equals("") ? "null, " : deleteResult.toString()) +
+                " average costTime:" + ave + "ms, HC average costTime:" + hcAve + "ms.");
     }
 
     @Override
@@ -433,9 +468,9 @@ public class QuickStart extends Activity {
                     long hcCostTime = data.getLongExtra("endTime", 0L) - testHCWebViewStartTime;
                     testHCWebViewStartTime = 0L;
                     hcOpenWebViewTimeTextView.setText(hcCostTime + "ms");
-                    if(lastWebviewHashCode != 0){
-                        HardCoderJNI.stopPerformance(lastWebviewHashCode);
-                    }
+//                    if(lastWebviewHashCode != 0){
+//                        HardCoderJNI.stopPerformance(lastWebviewHashCode);
+//                    }
                 }
                 break;
 
@@ -443,8 +478,9 @@ public class QuickStart extends Activity {
                 if(data != null) {
                     long costTime = data.getLongExtra("endTime", 0L) - testWebViewStartTime;
                     testWebViewStartTime = 0L;
-                    openWebViewTimeTextView.setText(costTime + "ms");
-                    totalCostTime += costTime;
+                    costTimeArray[testTime] = costTime;
+                    resultString.append((testTime + 1) + ". costTime:" + costTime);
+                    autoTestOpenWebViewTimeTextView.setText(resultString.toString());
                     new Handler().postDelayed(new Runnable(){
                         public void run() {
                             testWebViewHC(REQUEST_CODE_WEBVIEW_HC_AUTO_TEST, true);
@@ -456,19 +492,19 @@ public class QuickStart extends Activity {
                 if(data != null) {
                     long hcCostTime = data.getLongExtra("endTime", 0L) - testHCWebViewStartTime;
                     testHCWebViewStartTime = 0L;
-                    hcOpenWebViewTimeTextView.setText(hcCostTime + "ms");
-                    totalHCCostTime += hcCostTime;
-                    if(lastWebviewHashCode != 0){
-                        HardCoderJNI.stopPerformance(lastWebviewHashCode);
-                    }
+                    hcCostTimeArray[testTime] = hcCostTime;
+//                    if(lastWebviewHashCode != 0){
+//                        HardCoderJNI.stopPerformance(lastWebviewHashCode);
+//                    }
                     testTime ++;
+                    resultString.append(", HC costTime:" + hcCostTime + "\n");
+                    autoTestOpenWebViewTimeTextView.setText(resultString.toString());
                     if (testTime >= TEST_COUNT) {
                         if(testTime == 0){
                             autoTestOpenWebViewTimeTextView.setText("Error!");
                         }
-                        openWebViewTimeTextView.setText("");
-                        hcOpenWebViewTimeTextView.setText("");
-                        autoTestOpenWebViewTimeTextView.setText("Finish, average costTime:" + totalCostTime/testTime + "ms, HC average costTime:" + totalHCCostTime/testTime + "ms");
+                        getAveWithoutUnusualVallue(costTimeArray, hcCostTimeArray, testTime);
+                        autoTestOpenWebViewTimeTextView.setText(resultString.toString());
                     } else {
                         new Handler().postDelayed(new Runnable(){
                             public void run() {
@@ -478,61 +514,61 @@ public class QuickStart extends Activity {
                     }
                 }
                 break;
-            case REQUEST_CODE_VIDEO_WITHOUT_HC:
-                if(data != null) {
-                    long costTime = data.getLongExtra("endTime", 0L) - testVideoStartTime;
-                    testVideoStartTime = 0L;
-                    openVideoTimeTextView.setText(costTime + "ms");
-                }
-                break;
-            case REQUEST_CODE_VIDEO_WITH_HC:
-                if(data != null) {
-                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCVideoStartTime;
-                    testHCVideoStartTime = 0L;
-                    hcOpenVideoTimeTextView.setText(hcCostTime + "ms");
-                    if(lastVideoHashCode != 0){
-                        HardCoderJNI.stopPerformance(lastVideoHashCode);
-                    }
-                }
-                break;
-
-            case REQUEST_CODE_VIDEO_AUTO_TEST:
-                if(data != null) {
-                    long costTime = data.getLongExtra("endTime", 0L) - testVideoStartTime;
-                    testVideoStartTime = 0L;
-                    openVideoTimeTextView.setText(costTime + "ms");
-                    totalCostTime += costTime;
-                    new Handler().postDelayed(new Runnable(){
-                        public void run() {
-                            testVideoHC(REQUEST_CODE_VIDEO_HC_AUTO_TEST, true);
-                        }
-                    }, 3000);
-                }
-                break;
-            case REQUEST_CODE_VIDEO_HC_AUTO_TEST:
-                if(data != null) {
-                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCVideoStartTime;
-                    testHCVideoStartTime = 0L;
-                    hcOpenVideoTimeTextView.setText(hcCostTime + "ms");
-                    totalHCCostTime += hcCostTime;
-                    if(lastVideoHashCode != 0){
-                        HardCoderJNI.stopPerformance(lastVideoHashCode);
-                    }
-                    testTime ++;
-                    if (testTime >= TEST_COUNT) {
-                        if(testTime == 0){
-                            autoTestOpenVideoTimeTextView.setText("Error!");
-                        }
-                        autoTestOpenVideoTimeTextView.setText("Finish, average costTime:" + totalCostTime/testTime + "ms, HC average costTime:" + totalHCCostTime/testTime + "ms");
-                    } else {
-                        new Handler().postDelayed(new Runnable(){
-                            public void run() {
-                                testVideo(REQUEST_CODE_VIDEO_AUTO_TEST, true);
-                            }
-                        }, 6000);
-                    }
-                }
-                break;
+//            case REQUEST_CODE_VIDEO_WITHOUT_HC:
+//                if(data != null) {
+//                    long costTime = data.getLongExtra("endTime", 0L) - testVideoStartTime;
+//                    testVideoStartTime = 0L;
+//                    openVideoTimeTextView.setText(costTime + "ms");
+//                }
+//                break;
+//            case REQUEST_CODE_VIDEO_WITH_HC:
+//                if(data != null) {
+//                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCVideoStartTime;
+//                    testHCVideoStartTime = 0L;
+//                    hcOpenVideoTimeTextView.setText(hcCostTime + "ms");
+////                    if(lastVideoHashCode != 0){
+////                        HardCoderJNI.stopPerformance(lastVideoHashCode);
+////                    }
+//                }
+//                break;
+//
+//            case REQUEST_CODE_VIDEO_AUTO_TEST:
+//                if(data != null) {
+//                    long costTime = data.getLongExtra("endTime", 0L) - testVideoStartTime;
+//                    testVideoStartTime = 0L;
+//                    openVideoTimeTextView.setText(costTime + "ms");
+//                    totalCostTime += costTime;
+//                    new Handler().postDelayed(new Runnable(){
+//                        public void run() {
+//                            testVideoHC(REQUEST_CODE_VIDEO_HC_AUTO_TEST, true);
+//                        }
+//                    }, 3000);
+//                }
+//                break;
+//            case REQUEST_CODE_VIDEO_HC_AUTO_TEST:
+//                if(data != null) {
+//                    long hcCostTime = data.getLongExtra("endTime", 0L) - testHCVideoStartTime;
+//                    testHCVideoStartTime = 0L;
+//                    hcOpenVideoTimeTextView.setText(hcCostTime + "ms");
+//                    totalHCCostTime += hcCostTime;
+////                    if(lastVideoHashCode != 0){
+////                        HardCoderJNI.stopPerformance(lastVideoHashCode);
+////                    }
+//                    testTime ++;
+//                    if (testTime >= TEST_COUNT) {
+//                        if(testTime == 0){
+//                            autoTestOpenVideoTimeTextView.setText("Error!");
+//                        }
+//                        autoTestOpenVideoTimeTextView.setText("Finish, average costTime:" + totalCostTime/testTime + "ms, HC average costTime:" + totalHCCostTime/testTime + "ms");
+//                    } else {
+//                        new Handler().postDelayed(new Runnable(){
+//                            public void run() {
+//                                testVideo(REQUEST_CODE_VIDEO_AUTO_TEST, true);
+//                            }
+//                        }, 6000);
+//                    }
+//                }
+//                break;
             default:
                 break;
         }
