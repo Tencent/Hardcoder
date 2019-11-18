@@ -60,7 +60,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:text="2. 场景1：在新进程中打开 webview，Hardcoder 请求时间 5s。" />
+            android:text="2. 用例 1：在新进程中打开 webview，Hardcoder 请求时间 5s。" />
 
         <Button
             android:id="@+id/test_open_webview"
@@ -231,7 +231,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:text="3. 场景2：进行较复杂计算，显示结果时间时会主动结束 Hardcoder 请求，即可进行下一次测试。" />
+            android:text="3. 用例 2：进行较复杂计算，显示结果时间时会主动结束 Hardcoder 请求，即可进行下一次测试。" />
         <Button
             android:id="@+id/test_arithmetic"
             android:layout_width="match_parent"
