@@ -8,11 +8,11 @@
 
 
 
-**Hardcoder is a solution which allows Android APP and Android System to communicate with each other directly, solving the problem that Android APP could only use system standard API rather than the hardware resource of system. Through Hardcoder, Android APP could make good use of hardware resource of mobile phone such as CPU frequency, Large Core, GPU to improve APP performance while Android system could get more information from APP in order to provide system resource to Android APP more properly. At the same time, for lack of implementation by the standard interface, the APP and the system can also realize the model adaptation and function expansion through the framework.**
+**Hardcoder is a solution which allows Android APP and Android System to communicate with each other directly, solving the problem that Android APP could only use system standard API rather than the hardware resources of the system. Through Hardcoder, Android APP can make good use of mobile phones hardware resources such as CPU frequency, Large Core, and the GPU to improve APP performance. Hardcoder allows Android system to get more information from APP in order to better provide system resources to Android APP. At the same time, for lack of implementation by the standard interface, the APP and the system can also realize the model adaptation and function expansion through the framework.**
 
 
 
-Hardcoder framework could averagely optimize the performance of Wechat by 10%-30% in terms of Wechat startup, video delivery, mini program startup, and other highly-loaded scenes. Furthermore, it could also averagely optimize the performance of Mobile QQ by 10%-50% in terms of mobile QQ startup, chatting Initialization, picture delivery, and other highly-loaded scenes. The framework now has been applied to mobile brands such as OPPO, vivo, Huawei, XIAOMI, Samsung, Meizu, etc and covers more than 460 millions devices.
+Hardcoder framework can averagely optimize the performance of Wechat by 10%-30% in terms of Wechat startup, video delivery, mini program startup, and other highly-loaded scenes. Furthermore, it could also averagely optimize the performance of Mobile QQ by 10%-50% in terms of mobile QQ startup, chatting Initialization, picture delivery, and other highly-loaded scenes. The framework now has been applied to mobile brands such as OPPO, vivo, Huawei, XIAOMI, Samsung, Meizu, etc and covers more than 460 millions devices.
 
 ![readme](https://github.com/Tencent/Hardcoder/wiki/images/readme.jpg)
 
