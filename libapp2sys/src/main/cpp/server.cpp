@@ -38,6 +38,16 @@ public:
         return RET_OK;
     }
 
+    int requestGpuHighFreq(int scene, int64_t action, int level, int timeoutms, int callertid, int64_t timestamp) {
+        pdbg("ManufacturerCoder requestGpuHighFreq scene:%d action:%d level:%d timeoutms:%d callertid:%d timestamp:%d", scene, TOINT(action), level, timeoutms, callertid, TOINT(timestamp/1000000L));
+        return RET_OK;
+    }
+
+    int cancelGpuHighFreq(int callertid, int64_t timestamp) {
+        pdbg("ManufacturerCoder cancelGpuHighFreq callertid:%d timestamp:%d", callertid, TOINT(timestamp/1000000L));
+        return RET_OK;
+    }
+
     int requestCpuCoreForThread(int scene, int64_t action, std::vector<int>bindtids, int timeoutms, int callertid, int64_t timestamp) {
         pdbg("ManufacturerCoder requestCpuCoreForThread scene:%d action:%d bindtids len:%d timeoutms:%d callertid:%d timestamp:%d", scene, TOINT(action), TOINT(bindtids.size()), timeoutms, callertid, TOINT(timestamp/1000000L));
         int len = bindtids.size();
@@ -76,27 +86,42 @@ public:
         return RET_OK;
     }
 
+    int registerAnrCallback(int uid, int callertid, int64_t timestamp) {
+        pdbg("ManufacturerCoder registerAnrCallback callertid:%d timestamp:%d", callertid, TOINT(timestamp/1000000L));
+        return RET_OK;
+    }
+
+    int registerSystemEventCallback(int uid, int callertid, int64_t timestamp) {
+        pdbg("ManufacturerCoder registerSystemEventCallback uid:%d callertid:%d timestamp:%d", uid, callertid, TOINT(timestamp/1000000L));
+        return RET_OK;
+    }
+
+    virtual int registerBootPreloadResource(std::vector<std::string> file, int callertid, int64_t timestamp) {
+        pdbg("ManufacturerCoder registerBootPreloadResource callertid:%d timestamp:%d", callertid, TOINT(timestamp/1000000L));
+        return RET_OK;
+    }
+
     int terminateApp(int callertid, int64_t timestamp) {
         pdbg("ManufacturerCoder terminateApp callertid:%d timestamp:%d", callertid, TOINT(timestamp/1000000L));
         return RET_OK;
     }
 
-    int requestUnifyCpuIOThreadCore(int scene, int64_t action, int cpulevel, int iolevel, std::vector<int>bindtids, int timeoutms, int callertid, int64_t timestamp) {
-        pdbg("ManufacturerCoder requestUnifyCpuIOThreadCore scene:%d action:%d cpulevel:%d iolevel:%d bindtids len:%d timeoutms:%d callertid:%d timestamp:%d",
-        scene, TOINT(action), cpulevel,iolevel, TOINT(bindtids.size()), timeoutms, callertid, TOINT(timestamp/1000000L));
+    int requestUnifyCpuIOThreadCoreGpu(int scene, int64_t action, int cpulevel, int iolevel, std::vector<int>bindtids, int gpulevel, int timeoutms, int callertid, int64_t timestamp) {
+        pdbg("ManufacturerCoder requestUnifyCpuIOThreadCoreGpu scene:%d action:%d cpulevel:%d iolevel:%d bindtids len:%d gpulevel:%d timeoutms:%d callertid:%d timestamp:%d",
+            scene, TOINT(action), cpulevel,iolevel, TOINT(bindtids.size()), gpulevel, timeoutms, callertid, TOINT(timestamp/1000000L));
         int len = bindtids.size();
         for (int index = 0; index < len; index++) {
-            pdbg("ManufacturerCoder requestUnifyCpuIOThreadCore bindtids index=%d tid=%d", index, bindtids[index]);
+            pdbg("ManufacturerCoder requestUnifyCpuIOThreadCoreGpu bindtids index=%d tid=%d", index, bindtids[index]);
         }
         return RET_OK;
     }
 
-    int cancelUnifyCpuIOThreadCore(int cancelcpu, int cancelio, int cancelthread, std::vector<int>bindtids, int callertid, int64_t timestamp) {
-        pdbg("ManufacturerCoder cancelUnifyCpuIOThreadCore cancelcpu:%d cancelio:%d cancelthread:%d bindtids len:%d callertid:%d timestamp:%d",
-                    cancelcpu, cancelio, cancelthread, TOINT(bindtids.size()), callertid, TOINT(timestamp/1000000L));
+    int cancelUnifyCpuIOThreadCoreGpu(int cancelcpu, int cancelio, int cancelthread, std::vector<int>bindtids, int cancelgpu, int callertid, int64_t timestamp) {
+        pdbg("ManufacturerCoder cancelUnifyCpuIOThreadCoreGpu cancelcpu:%d cancelio:%d cancelthread:%d bindtids len:%d cancelgpu:%d callertid:%d timestamp:%d",
+                    cancelcpu, cancelio, cancelthread, TOINT(bindtids.size()), cancelgpu, callertid, TOINT(timestamp/1000000L));
         int len = bindtids.size();
         for (int index = 0; index < len; index++) {
-            pdbg("ManufacturerCoder cancelUnifyCpuIOThreadCore bindtids index=%d tid=%d", index, bindtids[index]);
+            pdbg("ManufacturerCoder cancelUnifyCpuIOThreadCoreGpu bindtids index=%d tid=%d", index, bindtids[index]);
         }
         return RET_OK;
     }
