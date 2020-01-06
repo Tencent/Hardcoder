@@ -86,21 +86,6 @@ public:
         return RET_OK;
     }
 
-    int registerAnrCallback(int uid, int callertid, int64_t timestamp) {
-        pdbg("ManufacturerCoder registerAnrCallback callertid:%d timestamp:%d", callertid, TOINT(timestamp/1000000L));
-        return RET_OK;
-    }
-
-    int registerSystemEventCallback(int uid, int callertid, int64_t timestamp) {
-        pdbg("ManufacturerCoder registerSystemEventCallback uid:%d callertid:%d timestamp:%d", uid, callertid, TOINT(timestamp/1000000L));
-        return RET_OK;
-    }
-
-    virtual int registerBootPreloadResource(std::vector<std::string> file, int callertid, int64_t timestamp) {
-        pdbg("ManufacturerCoder registerBootPreloadResource callertid:%d timestamp:%d", callertid, TOINT(timestamp/1000000L));
-        return RET_OK;
-    }
-
     int terminateApp(int callertid, int64_t timestamp) {
         pdbg("ManufacturerCoder terminateApp callertid:%d timestamp:%d", callertid, TOINT(timestamp/1000000L));
         return RET_OK;
