@@ -324,7 +324,7 @@ public:
     int64_t processSend(uint32_t funcid, T *r, uint8_t *data, uint32_t len) {//server send
         remote = *r;
         int64_t requestId = genRespPack(funcid, RET_OK, 0, data, len,  &resp, &respLen);
-        pdbg("processSend funcid:%d, len:%d, remote:%d requestId:%lld, respLen:%d", funcid, len, remote, requestId, respLen);
+        pdbg("processSend funcid:%d, len:%d, remote:%d requestId:%ld, respLen:%d", funcid, len, remote, requestId, respLen);
         return requestId;
     }
 
@@ -578,7 +578,7 @@ public:
             if (!manufactures.empty() && manufactures.size() == certs.size()) {
                 cJSON *certTags;
                 cJSON_AddItemToObject(jsonRequest, "certTags", certTags = cJSON_CreateArray());
-                for (int index = 0; index < manufactures.size(); index++) {
+                for (unsigned long index = 0; index < manufactures.size(); index++) {
                     cJSON *certTag;
                     certTag = cJSON_CreateObject();
                     cJSON_AddStringToObject(certTag, "manufacture", manufactures[index].c_str());
@@ -596,7 +596,7 @@ public:
         } else {
             amc::CheckPermission request;
             if (!manufactures.empty() && manufactures.size() == certs.size()) {
-                for (int index = 0; index < manufactures.size(); index++) {
+                for (unsigned long index = 0; index < manufactures.size(); index++) {
                     amc::CertTag* certTag = request.add_certtags();
                     certTag->set_manufacture(manufactures[index]);
                     certTag->set_cert(certs[index]);
@@ -607,7 +607,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_CHECK_PERMISSION, body, len, tid, timestamp);
         }
-        pdbg("checkPermission requestid:%lld, pid:%d, uid:%d, local pid:%d, uid:%d, tid:%d, timestamp:%d", requestid,
+        pdbg("checkPermission requestid:%ld, pid:%d, uid:%d, local pid:%d, uid:%d, tid:%d, timestamp:%d", requestid,
              pid, uid, getpid(), getuid(), tid, TOINT(timestamp / 1000000L));
         return requestid;
     }
@@ -650,7 +650,7 @@ public:
             requestid = pEngine->sendReq(FUNC_CPU_HIGH_FREQ, body, len, tid, timestamp);
         }
 
-        pdbg("requestCpuHighFreq requestid:%lld, scene:%d, action:%d, level:%d, timeoutms:%d, tid:%d, timestamp:%d" ,
+        pdbg("requestCpuHighFreq requestid:%ld, scene:%d, action:%d, level:%d, timeoutms:%d, tid:%d, timestamp:%d" ,
              requestid, scene, TOINT(action), level, timeoutms, tid, TOINT(timestamp/1000000L));
         return requestid;
     }
@@ -679,7 +679,7 @@ public:
         } else {
             requestid = pEngine->sendReq(FUNC_CANCEL_CPU_HIGH_FREQ, NULL, 0, tid, timestamp);
         }
-        pdbg("cancelCpuHighFreq requestid:%lld, tid:%d, timestamp:%d", requestid, tid, TOINT(timestamp / 1000000L));
+        pdbg("cancelCpuHighFreq requestid:%ld, tid:%d, timestamp:%d", requestid, tid, TOINT(timestamp / 1000000L));
         return requestid;
     }
 
@@ -719,7 +719,7 @@ public:
 
             requestid = pEngine->sendReq(FUNC_GPU_HIGH_FREQ, body, len, tid, timestamp);
         }
-        pdbg("requestGpuHighFreq requestid:%lld, scene:%d, action:%d, level:%d, timeoutms:%d, tid:%d, timestamp:%d" ,
+        pdbg("requestGpuHighFreq requestid:%ld, scene:%d, action:%d, level:%d, timeoutms:%d, tid:%d, timestamp:%d" ,
              requestid, scene, TOINT(action), level, timeoutms, tid, TOINT(timestamp/1000000L));
         return requestid;
     }
@@ -749,7 +749,7 @@ public:
         } else {
             requestid = pEngine->sendReq(FUNC_CANCEL_GPU_HIGH_FREQ, NULL, 0, tid, timestamp);
         }
-        pdbg("cancelGpuHighFreq ret:%d, tid:%d, timestamp:%d", requestid, tid, TOINT(timestamp / 1000000L));
+        pdbg("cancelGpuHighFreq ret:%ld, tid:%d, timestamp:%d", requestid, tid, TOINT(timestamp / 1000000L));
         return requestid;
     }
 
@@ -801,7 +801,7 @@ public:
 
             requestid = pEngine->sendReq(FUNC_CPU_CORE_FOR_THREAD, body, len, tid, timestamp);
         }
-        pdbg("requestCpuCoreForThread requestid:%lld, scene:%d, action:%d, bindlen:%d, timeoutms:%d", requestid, scene, TOINT(action), bindlen, timeoutms);
+        pdbg("requestCpuCoreForThread requestid:%ld, scene:%d, action:%d, bindlen:%d, timeoutms:%d", requestid, scene, TOINT(action), bindlen, timeoutms);
         return requestid;
     }
 
@@ -850,7 +850,7 @@ public:
 
             requestid = pEngine->sendReq(FUNC_CANCEL_CPU_CORE_FOR_THREAD, body, len, tid, timestamp);
         }
-        pdbg("cancelCpuCoreForThread requestid:%lld, unbindlen:%d", requestid, unbindlen);
+        pdbg("cancelCpuCoreForThread requestid:%ld, unbindlen:%d", requestid, unbindlen);
         return requestid;
     }
 
@@ -891,7 +891,7 @@ public:
 
             requestid = pEngine->sendReq(FUNC_HIGH_IO_FREQ, body, len, tid, timestamp);
         }
-        pdbg("requestCpuCoreForThread requestid:%lld, scene:%d, action:%d, level:%d, timeoutms:%d", requestid, scene, TOINT(action), level, timeoutms);
+        pdbg("requestCpuCoreForThread requestid:%ld, scene:%d, action:%d, level:%d, timeoutms:%d", requestid, scene, TOINT(action), level, timeoutms);
         return requestid;
 
     }
@@ -919,7 +919,7 @@ public:
         } else {
             requestid = pEngine->sendReq(FUNC_CANCEL_HIGH_IO_FREQ, NULL, 0, tid, timestamp);
         }
-        pdbg("cancelHighIOFreq requestid:%lld", requestid);
+        pdbg("cancelHighIOFreq requestid:%ld", requestid);
         return requestid;
     }
 
@@ -954,7 +954,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_SET_SCREEN_RESOLUTION, body, len, tid, timestamp);
         }
-        pdbg("requestScreenResolution requestid:%lld, level:%d, uiName:%s", requestid, level, uiName.c_str());
+        pdbg("requestScreenResolution requestid:%ld, level:%d, uiName:%s", requestid, level, uiName.c_str());
         return requestid;
     }
 
@@ -981,7 +981,7 @@ public:
         } else {
             requestid = pEngine->sendReq(FUNC_RESET_SCREEN_RESOLUTION, NULL, 0, tid, timestamp);
         }
-        pdbg("resetScreenResolution requestid:%lld ", requestid);
+        pdbg("resetScreenResolution requestid:%ld ", requestid);
         return requestid;
     }
 
@@ -1018,7 +1018,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_REG_ANR_CALLBACK, body, len, tid, timestamp);
         }
-        pdbg("registerANRCallback requestid:%lld ", requestid);
+        pdbg("registerANRCallback requestid:%ld ", requestid);
         return requestid;
     }
 
@@ -1055,7 +1055,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_REG_SYSTEM_EVENT_CALLBACK, body, len, tid, timestamp);
         }
-        pdbg("registerSystemEventCallback requestid:%lld ", requestid);
+        pdbg("registerSystemEventCallback requestid:%ld ", requestid);
         return requestid;
     }
 
@@ -1075,7 +1075,7 @@ public:
             if (files.size() > 0) {
                 cJSON *filelist;
                 cJSON_AddItemToObject(jsonRequest, "filelist", filelist = cJSON_CreateArray());
-                for (int index = 0; index < files.size(); index++) {
+                for (unsigned long index = 0; index < files.size(); index++) {
                     cJSON_AddItemToArray(filelist, cJSON_CreateString(files[index].c_str()));
                 }
             }
@@ -1097,7 +1097,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_REG_PRELOAD_BOOT_RESOURCE, body, len, tid, timestamp);
         }
-        pdbg("registerBootPreloadResource requestid:%lld, files size:%d", requestid, TOINT(files.size()));
+        pdbg("registerBootPreloadResource requestid:%ld, files size:%d", requestid, TOINT(files.size()));
         return requestid;
     }
 
@@ -1124,7 +1124,7 @@ public:
         } else {
             requestid = pEngine->sendReq(FUNC_TERMINATE_APP, NULL, 0, tid, timestamp);
         }
-        pdbg("terminateApp requestid:%lld", requestid);
+        pdbg("terminateApp requestid:%ld", requestid);
         return requestid;
     }
 
@@ -1187,7 +1187,7 @@ public:
             requestid = pEngine ->sendReq(FUNC_UNIFY_CPU_IO_THREAD_CORE_GPU, body, len, tid, timestamp);
         }
 
-        pdbg("requestUnifyCpuIOThreadCoreGpu requestid:%lld, scene:%d, action:%d, cpulevel:%d, iolevel:%d, bindlen:%d, gpulevel:%d, timeoutms:%d", requestid, scene, TOINT(action), cpulevel, iolevel, bindlen, gpulevel, timeoutms);
+        pdbg("requestUnifyCpuIOThreadCoreGpu requestid:%ld, scene:%d, action:%d, cpulevel:%d, iolevel:%d, bindlen:%d, gpulevel:%d, timeoutms:%d", requestid, scene, TOINT(action), cpulevel, iolevel, bindlen, gpulevel, timeoutms);
         return requestid;
     }
 
@@ -1241,7 +1241,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_CANCEL_UNIFY_CPU_IO_THREAD_CORE_GPU, body, len, tid, timestamp);
         }
-        pdbg("cancelUnifyCpuIOThreadCoreGpu requestid:%lld, cancelcpu:%d, cancelio:%d, cancelthread:%d, unbindlen:%d, cancelgpu:%d ", requestid, cancelcpu, cancelio, cancelthread, unbindlen, cancelgpu);
+        pdbg("cancelUnifyCpuIOThreadCoreGpu requestid:%ld, cancelcpu:%d, cancelio:%d, cancelthread:%d, unbindlen:%d, cancelgpu:%d ", requestid, cancelcpu, cancelio, cancelthread, unbindlen, cancelgpu);
         return requestid;
     }
 
@@ -1272,7 +1272,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_CONFIGURE, body, len, tid, timestamp);
 
-            pdbg("configure requestid:%lld, request size:%d", requestid, request.ByteSize());
+            pdbg("configure requestid:%ld, request size:%d", requestid, request.ByteSize());
         }
         return requestid;
     }
@@ -1304,7 +1304,7 @@ public:
             request.SerializeToArray(body, len);
             requestid = pEngine->sendReq(FUNC_GET_PARAMETERS, body, len, tid, timestamp);
 
-            pdbg("getParameters requestid:%lld, request size:%d", requestid, request.ByteSize());
+            pdbg("getParameters requestid:%ld, request size:%d", requestid, request.ByteSize());
         }
         return requestid;
     }
@@ -1312,7 +1312,7 @@ public:
     int onCallback(int uid, int funcid, uint64_t requestid, int bodyFormat, uint64_t timestamp, int retCode, uint8_t *data, int len) {
         UNUSED(uid);
 
-        pdbg("onCallback c2JavaCallback:0x%x, funcid:%d, requestid:%lld, bodyFormat:%d, retCode:%d, data:0x%x, len:%d", TOINT(c2JavaCallback()), funcid, requestid, bodyFormat, retCode, TOINT(data), len);
+        pdbg("onCallback c2JavaCallback:0x%x, funcid:%d, requestid:%ld, bodyFormat:%d, retCode:%d, data:0x%x, len:%d", TOINT(c2JavaCallback()), funcid, requestid, bodyFormat, retCode, TOINT(data), len);
         if (!c2JavaCallback()) {
             return 0;
         }

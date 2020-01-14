@@ -152,7 +152,7 @@ public:
         }
 
         int64_t requestId = pp->processSend(funcid, &fd, data, len);
-        pdbg("callback funcid:%d, len:%d requestId:%d", funcid, len, requestId);
+        pdbg("callback funcid:%d, len:%d requestId:%ld", funcid, len, requestId);
         respQueue.push(pp);
         return requestId;
     }
