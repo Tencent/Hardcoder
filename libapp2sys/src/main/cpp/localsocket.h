@@ -115,10 +115,14 @@ private:
 
     // #lizard forgives
     int loop(const int isServer) {
-        fd_set fdset;
-        FD_ZERO(&fdset);
-        FD_SET(m_fd, &fdset);
-        FD_SET(m_pipefd[0], &fdset);
+        std::vector<struct pollfd> pfds;
+        struct pollfd item = {0, 0, 0};
+        item.fd = m_fd;
+        item.events = POLLIN;
+        pfds.push_back(item);
+        item.fd = m_pipefd[0];
+        item.events = POLLIN;
+        pfds.push_back(item);
         int maxfd = m_fd;
 
         pdbg("loop, m_fd:%d, maxfd:%d, isServer:%d", m_fd, maxfd, isServer);
@@ -139,7 +143,7 @@ private:
                     } else {//server
                         m_sendQueue.pop();
                         delete[] sendPack->data;
-                        FD_CLR(sendPack->fd, &fdset);
+                        pfds.erase(std::remove_if(pfds.begin(), pfds.end(), [=](struct pollfd item){ return item.fd == sendPack->fd; }), pfds.end());
                         notifyError(sendPack->fd);
                         delete sendPack;
                         continue;
@@ -161,45 +165,46 @@ private:
                          m_sendQueue.size(), TOINT(getMillisecond() - startTime) );
                 }
             }
-            struct timeval timeout;
-            timeout.tv_sec = 1;
-            timeout.tv_usec = 0;
-            fd_set tmpSet = fdset;
-            int selectRet = select(maxfd + 1, &tmpSet, NULL, NULL, &timeout);
-            if (selectRet == -1 && errno != EINTR) {
-                pdbg("loop, select errno:%d", errno);
+            int pollRet = poll(&pfds[0], pfds.size(), 1000);
+            if (pollRet == -1 && errno != EINTR) {
+                pdbg("loop, poll errno:%d", errno);
                 continue;
-            } else if (selectRet == 0) {
+            } else if (pollRet == 0) {
                 continue;
             } else {
-                for (int i = 3; i <= maxfd; i++) {
-                    if ((!FD_ISSET(i, &tmpSet)) || (!FD_ISSET(i, &fdset))) {
+                for (int i = 0; i <= pfds.size(); i++) {
+                    int fd = pfds[i].fd;
+                    int flag = pfds[i].revents&POLLIN;
+                    if (!flag) {
                         continue;
                     }
-                    if (m_pipefd[0] == i) {
+                    if (m_pipefd[0] == fd) {
                         int l = 0;
                         int ret = read(m_pipefd[0], &l, sizeof(int));
                         UNUSED(ret);
-                        pdbg("loop, select success, read pipe ret:%d", ret);
-                    } else if (isServer && i == m_fd) {
+                        pdbg("loop, poll success, revents&POLLIN:%d, read pipe ret:%d", flag, ret);
+                    } else if (isServer && fd == m_fd) {
                         int acceptfd = socketAccept(m_fd);
                         if (acceptfd <= 0) {
                             return -1;
                         }
-                        FD_SET(acceptfd, &fdset);
+                        struct pollfd item = {0, 0, 0};
+                        item.fd = acceptfd;
+                        item.events = POLLIN;
+                        pfds.push_back(item);
                         maxfd = maxfd > acceptfd ? maxfd : acceptfd;
-                        pdbg("loop, select success, socketAccept, acceptfd:%d, maxfd:%d", acceptfd, maxfd);
+                        pdbg("loop, poll success, events&POLLIN:%d, socketAccept, acceptfd:%d, maxfd:%d", flag, acceptfd, maxfd);
                     } else {
                         uint8_t szBuf[4096];
-                        int ret = recv(i, szBuf, sizeof(szBuf), 0);
+                        int ret = recv(fd, szBuf, sizeof(szBuf), 0);
                         if (ret <= 0) {
-                            perr("loop, recv error, fd:%d, ret:%d, errno:%d", i, ret, errno);
-                            FD_CLR(i, &fdset);
-                            notifyError(i);
+                            perr("loop, recv error, fd:%d, ret:%d, errno:%d", fd, ret, errno);
+                            pfds.erase(std::remove_if(pfds.begin(), pfds.end(), [=](struct pollfd item){ return item.fd == fd; }), pfds.end());
+                            notifyError(fd);
                             continue;
                         }
-                        pdbg("loop, select success, recv fd:%d, ret:%d", i, ret);
-                        recvEvent(EVENT_DATA, i, 0, mapUid[i].first, mapUid[i].second.c_str(), szBuf, ret);
+                        pdbg("loop, poll success, events&POLLIN:%d, recv fd:%d, ret:%d", flag, fd, ret);
+                        recvEvent(EVENT_DATA, fd, 0, mapUid[fd].first, mapUid[fd].second.c_str(), szBuf, ret);
                     }
                 }
             }
