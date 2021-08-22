@@ -56,15 +56,12 @@ private:
     }
 
     static int checkCanWrite(int fd) {
-        fd_set fdset;
-        FD_ZERO(&fdset);
-        FD_SET(fd, &fdset);
-        struct timeval timeout;
-        timeout.tv_sec = 0;
-        timeout.tv_usec = 0;
-        select(fd + 1, NULL, &fdset, NULL, &timeout);
-        pdbg("checkCanWrite FD_ISSET(fd, &fdset):%d, fd:%d", FD_ISSET(fd, &fdset), fd);
-        return FD_ISSET(fd, &fdset);
+        struct pollfd pfd = {0, 0, 0};
+        pfd.fd = fd;
+        pfd.events = POLLOUT;
+        int ret = poll(&pfd, 1, -1);
+        pdbg("checkCanWrite poll ret:%d revent&POLLOUT:%d, fd:%d", ret, pfd.revents&POLLOUT, fd);
+        return pfd.revents&POLLOUT;
     }
 
 
