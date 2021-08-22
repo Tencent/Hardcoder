@@ -4,6 +4,7 @@
 #include "util.h"
 #include <sys/stat.h>
 #include <sys/un.h>
+#include <sys/poll.h>
 #include <asm/ioctls.h>
 
 /**
@@ -310,22 +311,21 @@ public:
         pwrn("createSocket, connect socket, ret:%d, local:%s, remote:%s", ret, localPath, remotePath);
         if (ret == -1) {
             if (errno == EINPROGRESS) {
-                struct timeval tv_timeout = {5, 0};
-                fd_set fdset;
-                FD_ZERO(&fdset);
-                FD_SET(fd, &fdset);
-                if (select(fd + 1, NULL, &fdset, NULL, &tv_timeout) > 0) {
+                struct pollfd pfd = {0, 0, 0};
+                pfd.fd = fd;
+                pfd.events = POLLIN;
+                if (poll(&pfd, 1, 5000) > 0) {
                     int scklen = sizeof(int);
                     int error;
                     getsockopt(fd, SOL_SOCKET, SO_ERROR, &error, (socklen_t *)&scklen);
                     if (error != 0) {
                         close(fd);
-                        perr("createSocket, connect select getsockopt failed ret:%d fd:%d path:%s", ret, fd, remotePath);
+                        perr("createSocket, connect poll getsockopt failed ret:%d fd:%d path:%s", ret, fd, remotePath);
                         return -3;
                     }
-                } else { //timeout or select error
+                } else { //timeout or poll error
                     close(fd);
-                    perr("createSocket, connect select timeout ret:%d fd:%d path:%s", ret, fd, remotePath);
+                    perr("createSocket, connect poll timeout ret:%d fd:%d path:%s", ret, fd, remotePath);
                     return -3;
                 }
             } else {
