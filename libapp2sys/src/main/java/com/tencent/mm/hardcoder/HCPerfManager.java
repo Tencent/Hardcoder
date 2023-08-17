@@ -165,7 +165,7 @@ public class HCPerfManager {
     private boolean isParamsValid(final int delay, final int cpuLevel, final int ioLevel, final int gpuLevel,
                                   final int[] bindTids, final int timeout){
         if(delay < 0 || cpuLevel < 0 || gpuLevel < 0 || ioLevel < 0 || bindTids == null ||
-                bindTids.length <= 0 || timeout <= 0){
+                bindTids.length < 0 || timeout <= 0){
             return false;
         }
         return true;
