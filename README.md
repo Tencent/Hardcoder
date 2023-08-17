@@ -58,4 +58,11 @@ Hardcoder framework could averagely optimize the performance of Wechat by 10%-30
 Hardcoder is under the BSD license. See the [LICENSE](https://github.com/Tencent/Hardcoder/blob/master/LICENSE) file for details.
 
 
+## 信息公示
 
+- SDK 名称：Hardcoder
+- 版本号：v1.0.0
+- 开发者：深圳市腾讯计算机系统有限公司
+- 主要功能：Hardcoder 是一套 Android APP 与系统间的通信解决方案，突破了 APP 只能调用系统标准 API，无法直接调用系统底层硬件资源的问题，让 Android APP 和系统能实时通信。
+- [Hardcoder SDK 使用说明](https://github.com/Tencent/Hardcoder/wiki)
+- [Hardcoder SDK 个人信息保护规则](https://support.weixin.qq.com/cgi-bin/mmsupportacctnodeweb-bin/pages/kGLpLlCX1Vkskw7U)
